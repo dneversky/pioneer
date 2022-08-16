@@ -1,0 +1,38 @@
+syntax = 'proto3';
+package org.dneversky.gateway;
+
+// Data Transfer Objects
+
+message EmptyUser {}
+message Users {
+  repeated User users = 1;
+}
+
+message UserId {
+  int64 id = 1;
+}
+
+message User {
+  int64 id = 1;
+  string nickname = 2;
+  int64 teamId = 3;
+  repeated string specsIds = 4;
+}
+
+message UserDetails {
+  string username = 1;
+  string password = 2;
+}
+
+message UserWithDetails {
+  string nickname = 1;
+  UserDetails details = 2;
+}
+
+// Services
+
+service UserService {
+  rpc getUserById(UserId) returns (User);
+  rpc createUser(UserWithDetails) returns (User);
+  rpc getUsers(EmptyUser) returns (Users);
+}

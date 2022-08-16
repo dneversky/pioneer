@@ -1,0 +1,13 @@
+package dev.dneversky.pioneer.project;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class PioneerProjectApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(PioneerProjectApplication.class, args);
+    }
+
+}
