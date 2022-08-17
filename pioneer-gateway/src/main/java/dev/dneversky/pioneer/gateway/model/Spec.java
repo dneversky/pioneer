@@ -2,6 +2,7 @@ package dev.dneversky.pioneer.gateway.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dneversky.gateway.SpecServiceOuterClass;
 
 import java.util.Objects;
 
@@ -11,6 +12,12 @@ public class Spec {
     private String id;
     private String name;
     private String description;
+
+    public Spec(SpecServiceOuterClass.Spec spec) {
+        this.id = spec.getId();
+        this.name = spec.getName();
+        this.description = spec.getDescription();
+    }
 
     @Override
     public boolean equals(Object o) {

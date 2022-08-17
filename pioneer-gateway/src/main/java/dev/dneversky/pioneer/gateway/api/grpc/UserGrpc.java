@@ -13,7 +13,7 @@ public class UserGrpc {
     @GrpcClient("cloud-grpc-server")
     private UserServiceGrpc.UserServiceBlockingStub serviceBlockingStub;
 
-    private List<UserServiceOuterClass.User> getProtoUsers() {
+    public List<UserServiceOuterClass.User> getProtoUsers() {
         UserServiceOuterClass.Users response = serviceBlockingStub
                 .getUsers(UserServiceOuterClass.EmptyUser.newBuilder().build());
         return response.getUsersList();
