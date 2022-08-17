@@ -4,12 +4,16 @@ import dev.dneversky.pioneer.specs.entity.Spec;
 import dev.dneversky.pioneer.specs.exception.SpecWithIdNotFoundException;
 import dev.dneversky.pioneer.specs.repository.SpecRepository;
 import dev.dneversky.pioneer.specs.service.SpecService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class DefaultSpecService implements SpecService {
 
@@ -18,6 +22,20 @@ public class DefaultSpecService implements SpecService {
     @Autowired
     public DefaultSpecService(SpecRepository specRepository) {
         this.specRepository = specRepository;
+    }
+
+    @Override
+    public List<Spec> findSpecsByIds(Collection<String> ids) {
+        List<Spec> specs = new ArrayList<>();
+        for(String id : ids) {
+            Optional<Spec> findSpec = specRepository.findById(id);
+            if(findSpec.isEmpty()) {
+                log.error("Couldn't find spec with id {} from findSpecsByIds() method in {}.", id, this.getClass().getName());
+                continue;
+            }
+            specs.add(findSpec.get());
+        }
+        return specs;
     }
 
     @Override

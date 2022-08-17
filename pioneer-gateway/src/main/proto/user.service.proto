@@ -15,7 +15,7 @@ message UserId {
 message User {
   int64 id = 1;
   string nickname = 2;
-  int64 teamId = 3;
+  string teamId = 3;
   repeated string specsIds = 4;
 }
 
