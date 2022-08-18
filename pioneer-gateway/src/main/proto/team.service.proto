@@ -1,0 +1,31 @@
+syntax = 'proto3';
+package org.dneversky.gateway;
+
+// Data Transfer Objects
+
+message EmptyTeam {}
+message Teams {
+  repeated Team teams = 1;
+}
+
+message TeamId {
+  string id = 1;
+}
+
+message Team {
+  string id = 1;
+  repeated int64 membersIds = 2;
+  repeated string specsIds = 3;
+}
+
+message NewTeam {
+  repeated int64 membersIds = 1;
+  repeated string specsIds = 2;
+}
+
+// Services
+
+service TeamService {
+  rpc getTeams(EmptyTeam) returns (Teams);
+  rpc createTeam(NewTeam) returns (Team);
+}

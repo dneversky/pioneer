@@ -12,6 +12,10 @@ message UserId {
   int64 id = 1;
 }
 
+message UserIds {
+  repeated int64 id = 1;
+}
+
 message User {
   int64 id = 1;
   string nickname = 2;
@@ -19,20 +23,16 @@ message User {
   repeated string specsIds = 4;
 }
 
-message UserDetails {
-  string username = 1;
-  string password = 2;
-}
-
-message UserWithDetails {
+message NewUser {
   string nickname = 1;
-  UserDetails details = 2;
+  string username = 2;
+  string password = 3;
 }
 
 // Services
 
 service UserService {
   rpc getUserById(UserId) returns (User);
-  rpc createUser(UserWithDetails) returns (User);
+  rpc createUser(NewUser) returns (User);
   rpc getUsers(EmptyUser) returns (Users);
 }

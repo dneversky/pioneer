@@ -1,6 +1,7 @@
 package dev.dneversky.pioneer.gateway.service;
 
 import dev.dneversky.pioneer.gateway.api.grpc.UserGrpc;
+import dev.dneversky.pioneer.gateway.model.NewUser;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.User;
 import org.dneversky.gateway.UserServiceOuterClass;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -27,15 +29,37 @@ public class UserService {
         List<User> users = new ArrayList<>();
         List<UserServiceOuterClass.User> protoUsers = userGrpc.getProtoUsers();
         for(UserServiceOuterClass.User protoUser : protoUsers) {
+            users.add(constructUserWithProtoUser(protoUser));
+        }
+
+        return users;
+    }
+
+    public Collection<User> getUsersByIds(Collection<Long> ids) {
+        List<User> users = new ArrayList<>();
+        List<UserServiceOuterClass.User> protoUsers = userGrpc.getProtoUsersByIds(ids);
+        for(UserServiceOuterClass.User protoUser : protoUsers) {
             User user = new User();
             user.setId(protoUser.getId());
             user.setNickname(protoUser.getNickname());
             user.setSpecs(getSpecsWithProtoUser(protoUser));
-            user.setTeam(null);
+            users.add(constructUserWithProtoUser(protoUser));
             users.add(user);
         }
-
         return users;
+    }
+
+    public User createUser(NewUser newUser) {
+        return constructUserWithProtoUser(userGrpc.createUser(newUser));
+    }
+
+    private User constructUserWithProtoUser(UserServiceOuterClass.User protoUser) {
+        User user = new User();
+        user.setId(protoUser.getId());
+        user.setNickname(protoUser.getNickname());
+        user.setSpecs(getSpecsWithProtoUser(protoUser));
+        user.setTeam(null);
+        return user;
     }
 
     private Set<Spec> getSpecsWithProtoUser(UserServiceOuterClass.User protoUser) {

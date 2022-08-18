@@ -26,4 +26,9 @@ public class SpecService {
                 .map(Spec::new)
                 .collect(Collectors.toSet());
     }
+
+    public Spec createSpec(Spec spec) {
+        SpecServiceOuterClass.Spec newProtoSpec = specGrpc.createSpec(spec);
+        return new Spec(newProtoSpec);
+    }
 }

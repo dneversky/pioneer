@@ -1,5 +1,6 @@
 package dev.dneversky.pioneer.specs.api;
 
+import dev.dneversky.pioneer.specs.converter.SpecConverter;
 import dev.dneversky.pioneer.specs.converter.SpecProtoConverter;
 import dev.dneversky.pioneer.specs.entity.Spec;
 import dev.dneversky.pioneer.specs.service.impl.DefaultSpecService;
@@ -25,10 +26,16 @@ public class SpecGrpcService extends SpecServiceGrpc.SpecServiceImplBase {
     @Override
     public void getSpecsByIds(SpecServiceOuterClass.SpecsIds request, StreamObserver<SpecServiceOuterClass.Specs> responseObserver) {
         List<Spec> specs = specService.findSpecsByIds(request.getIdsList());
-
         SpecServiceOuterClass.Specs response = SpecServiceOuterClass.Specs.newBuilder()
                 .addAllSpecs(specs.stream().map(SpecProtoConverter::convert).collect(Collectors.toList())).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
+    @Override
+    public void createSpec(SpecServiceOuterClass.Spec request, StreamObserver<SpecServiceOuterClass.Spec> responseObserver) {
+        Spec spec = specService.saveSpec(SpecConverter.convert(request));
+        SpecServiceOuterClass.Spec response = SpecProtoConverter.convert(spec);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
