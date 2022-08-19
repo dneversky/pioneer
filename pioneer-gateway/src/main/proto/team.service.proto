@@ -1,9 +1,8 @@
 syntax = 'proto3';
 package org.dneversky.gateway;
 
-// Data Transfer Objects
-
 message EmptyTeam {}
+
 message Teams {
   repeated Team teams = 1;
 }
@@ -22,8 +21,6 @@ message NewTeam {
   repeated int64 membersIds = 1;
   repeated string specsIds = 2;
 }
-
-// Services
 
 service TeamService {
   rpc getTeams(EmptyTeam) returns (Teams);

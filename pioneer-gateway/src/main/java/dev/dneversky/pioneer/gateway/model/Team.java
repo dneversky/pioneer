@@ -3,16 +3,17 @@ package dev.dneversky.pioneer.gateway.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class Team {
+
     private String id;
-    private Set<User> members = new HashSet<>();
-    private Set<Spec> specs = new HashSet<>();
+    private List<User> members = new ArrayList<>();
+    private List<Spec> specs = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

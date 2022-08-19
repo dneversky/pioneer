@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -31,11 +30,10 @@ public class UserService {
         for(UserServiceOuterClass.User protoUser : protoUsers) {
             users.add(constructUserWithProtoUser(protoUser));
         }
-
         return users;
     }
 
-    public Collection<User> getUsersByIds(Collection<Long> ids) {
+    public List<User> getUsersByIds(Collection<Long> ids) {
         List<User> users = new ArrayList<>();
         List<UserServiceOuterClass.User> protoUsers = userGrpc.getProtoUsersByIds(ids);
         for(UserServiceOuterClass.User protoUser : protoUsers) {
@@ -62,7 +60,7 @@ public class UserService {
         return user;
     }
 
-    private Set<Spec> getSpecsWithProtoUser(UserServiceOuterClass.User protoUser) {
-        return (Set<Spec>) specService.getSpecsByIds(protoUser.getSpecsIdsList());
+    private List<Spec> getSpecsWithProtoUser(UserServiceOuterClass.User protoUser) {
+        return specService.getSpecsByIds(protoUser.getSpecsIdsList());
     }
 }

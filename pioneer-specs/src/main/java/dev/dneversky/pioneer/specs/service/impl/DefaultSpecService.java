@@ -55,19 +55,13 @@ public class DefaultSpecService implements SpecService {
 
     @Override
     public Spec updateSpec(Spec spec) {
-        Optional<Spec> findSpec = specRepository.findById(spec.getId());
-        if(findSpec.isEmpty()) {
-            throw new SpecWithIdNotFoundException(spec.getId());
-        }
+        specRepository.findById(spec.getId()).orElseThrow(() -> new SpecWithIdNotFoundException(spec.getId()));
         return specRepository.save(spec);
     }
 
     @Override
     public void deleteSpec(String id) {
-        Optional<Spec> findSpec = specRepository.findById(id);
-        if(findSpec.isEmpty()) {
-            throw new SpecWithIdNotFoundException(id);
-        }
-        specRepository.delete(findSpec.get());
+        Spec findSpec = specRepository.findById(id).orElseThrow(() -> new SpecWithIdNotFoundException(id));
+        specRepository.delete(findSpec);
     }
 }

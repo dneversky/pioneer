@@ -23,10 +23,8 @@ public class TeamGrpc {
     }
 
     public TeamServiceOuterClass.Team createTeam(Team team) {
-        return blockingStub.createTeam(
-                TeamServiceOuterClass.NewTeam.newBuilder()
+        return blockingStub.createTeam(TeamServiceOuterClass.NewTeam.newBuilder()
                         .addAllMembersIds(team.getMembers().stream().map(User::getId).collect(Collectors.toSet()))
-                        .addAllSpecsIds(team.getSpecs().stream().map(Spec::getId).collect(Collectors.toSet()))
-                        .build());
+                        .addAllSpecsIds(team.getSpecs().stream().map(Spec::getId).collect(Collectors.toSet())).build());
     }
 }

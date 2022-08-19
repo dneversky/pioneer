@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class TeamService {
@@ -27,7 +26,7 @@ public class TeamService {
         this.userService = userService;
     }
 
-    public Collection<Team> getTeams(Collection<String> ids) {
+    public Collection<Team> getTeams() {
         List<Team> teams = new ArrayList<>();
         List<TeamServiceOuterClass.Team> protoTeams = teamGrpc.getProtoTeams();
         for(TeamServiceOuterClass.Team protoTeam : protoTeams) {
@@ -48,11 +47,11 @@ public class TeamService {
         return newTeam;
     }
 
-    private Set<Spec> getSpecsWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
-        return (Set<Spec>) specService.getSpecsByIds(protoTeam.getSpecsIdsList());
+    private List<Spec> getSpecsWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
+        return specService.getSpecsByIds(protoTeam.getSpecsIdsList());
     }
 
-    private Set<User> getUsersWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
-        return (Set<User>) userService.getUsersByIds(protoTeam.getMembersIdsList());
+    private List<User> getUsersWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
+        return userService.getUsersByIds(protoTeam.getMembersIdsList());
     }
 }

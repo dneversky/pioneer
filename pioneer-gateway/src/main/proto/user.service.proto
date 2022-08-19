@@ -1,9 +1,8 @@
 syntax = 'proto3';
 package org.dneversky.gateway;
 
-// Data Transfer Objects
-
 message EmptyUser {}
+
 message Users {
   repeated User users = 1;
 }
@@ -28,8 +27,6 @@ message NewUser {
   string username = 2;
   string password = 3;
 }
-
-// Services
 
 service UserService {
   rpc getUserById(UserId) returns (User);

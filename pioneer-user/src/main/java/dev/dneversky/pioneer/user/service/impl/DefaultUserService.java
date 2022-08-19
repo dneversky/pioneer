@@ -34,8 +34,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User getUserById(long id) {
-        return userRepository.findById(id).orElseThrow(
-                () -> new UserWithIdNotFoundException(id));
+        return userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
     }
 
     @Override
@@ -64,15 +63,13 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void deleteUser(long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UserWithIdNotFoundException(id));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
         userRepository.delete(user);
     }
 
     @Override
     public User addTeam(long userId, String teamId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserWithIdNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.setTeamId(teamId);
 
         return userRepository.save(user);
@@ -89,8 +86,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User addSpecs(long userId, Set<String> specs) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserWithIdNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.getSpecs().addAll(specs);
 
         return userRepository.save(user);
@@ -98,8 +94,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User deleteSpecs(long userId, Set<String> specs) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserWithIdNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.getSpecs().removeAll(specs);
 
         return userRepository.save(user);

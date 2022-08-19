@@ -28,7 +28,6 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
         List<User> users = userService.getUsers();
         UserServiceOuterClass.Users response = UserServiceOuterClass.Users.newBuilder()
                 .addAllUsers(users.stream().map(ProtoUserConverter::convert).collect(Collectors.toList())).build();
-
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -37,7 +36,6 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
     public void createUser(UserServiceOuterClass.NewUser request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
         User user = userService.saveUser(UserConverter.convert(request));
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
-
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

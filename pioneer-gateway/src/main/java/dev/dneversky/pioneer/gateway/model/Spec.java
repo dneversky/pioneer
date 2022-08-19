@@ -9,6 +9,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 public class Spec {
+
     private String id;
     private String name;
     private String description;

@@ -28,7 +28,6 @@ public class TeamGrpcService extends TeamServiceGrpc.TeamServiceImplBase {
         List<Team> teams = teamService.findTeams();
         TeamServiceOuterClass.Teams response = TeamServiceOuterClass.Teams.newBuilder()
                 .addAllTeams(teams.stream().map(ProtoTeamConverter::convert).collect(Collectors.toList())).build();
-
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -37,7 +36,6 @@ public class TeamGrpcService extends TeamServiceGrpc.TeamServiceImplBase {
     public void createTeam(TeamServiceOuterClass.NewTeam request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
         Team team = teamService.saveTeam(TeamConverter.convert(request));
         TeamServiceOuterClass.Team response = ProtoTeamConverter.convert(team);
-
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

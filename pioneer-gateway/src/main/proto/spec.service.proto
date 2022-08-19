@@ -1,15 +1,16 @@
 syntax = 'proto3';
 package org.dneversky.gateway;
 
-// Data Transfer Objects
-
 message EmptySpec {}
+
 message SpecsIds {
   repeated string ids = 1;
 }
+
 message Specs {
   repeated Spec specs = 1;
 }
+
 message Spec {
   string id = 1;
   string name = 2;

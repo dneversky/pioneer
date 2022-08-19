@@ -20,11 +20,9 @@ public class SpecService {
         this.specGrpc = specGrpc;
     }
 
-    public Collection<Spec> getSpecsByIds(Collection<String> ids) {
+    public List<Spec> getSpecsByIds(Collection<String> ids) {
         List<SpecServiceOuterClass.Spec> specs = specGrpc.getProtoSpecsByIds(ids);
-        return specs.stream()
-                .map(Spec::new)
-                .collect(Collectors.toSet());
+        return specs.stream().map(Spec::new).collect(Collectors.toList());
     }
 
     public Spec createSpec(Spec spec) {

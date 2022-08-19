@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 @Data
 @Document
@@ -19,5 +20,25 @@ public class Team {
     private Collection<Long> members = new HashSet<>();
     private Collection<String> specs = new HashSet<>();
 
-    // chat, users, tags
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return Objects.equals(id, team.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id='" + id + '\'' +
+                ", members=" + members +
+                ", specs=" + specs +
+                '}';
+    }
 }

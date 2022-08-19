@@ -22,10 +22,8 @@ public class SpecGrpc {
     }
 
     public SpecServiceOuterClass.Spec createSpec(Spec spec) {
-        return serviceBlockingStub.createSpec(
-                SpecServiceOuterClass.Spec.newBuilder()
+        return serviceBlockingStub.createSpec(SpecServiceOuterClass.Spec.newBuilder()
                         .setName(spec.getName())
-                        .setDescription(spec.getDescription())
-                        .build());
+                        .setDescription(spec.getDescription()).build());
     }
 }
