@@ -1,15 +1,16 @@
 server:
-  port: 8082
+  port: 8080
 
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+
+grpc:
+  client:
+    GLOBAL:
+      negotiationType: plaintext
 
 eureka:
   client:

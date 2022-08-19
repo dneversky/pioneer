@@ -5,7 +5,7 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/piouser
+    url: jdbc:mysql://localhost:3306/piousers
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
