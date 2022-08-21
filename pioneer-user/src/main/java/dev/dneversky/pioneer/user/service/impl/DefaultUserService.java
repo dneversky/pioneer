@@ -39,9 +39,9 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User saveUser(User user) {
-        userRepository.findByUserDetails(user.getUserDetails()).orElseThrow(
-                () -> new UserWithUsernameExistsException(user.getUserDetails().getUsername()));
-        user.setUserDetails(createUserDetails(user.getUserDetails()));
+        userRepository.findByDetails(user.getDetails()).orElseThrow(
+                () -> new UserWithUsernameExistsException(user.getDetails().getUsername()));
+        user.setDetails(createUserDetails(user.getDetails()));
 
         return userRepository.save(user);
     }

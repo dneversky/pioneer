@@ -14,13 +14,12 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nickname;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "details_id")
-    @MapsId
-    private UserDetails userDetails;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private UserDetails details;
 
     @ElementCollection
     @CollectionTable(name = "user_spec", joinColumns = @JoinColumn(name = "user_id"))
@@ -34,11 +33,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userDetails, user.userDetails);
+        return Objects.equals(id, user.id) && Objects.equals(details, user.details);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userDetails);
+        return Objects.hash(id, details);
     }
 }

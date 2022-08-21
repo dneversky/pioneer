@@ -1,22 +1,20 @@
 package dev.dneversky.pioneer.user.entity;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @NotNull
     private String username;
     private String password;
 
@@ -25,6 +23,9 @@ public class UserDetails {
     @Column(name = "role")
     private Set<Role> roles;
     private boolean enabled;
+
+    @OneToOne(mappedBy = "details")
+    private User user;
 
     @Override
     public boolean equals(Object o) {
@@ -42,7 +43,6 @@ public class UserDetails {
     @Override
     public String toString() {
         return "UserDetails{" +
-                "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
