@@ -8,6 +8,8 @@ spring:
     name: api-gateway
 
 grpc:
+  server:
+    port: 0
   client:
     GLOBAL:
       negotiationType: plaintext

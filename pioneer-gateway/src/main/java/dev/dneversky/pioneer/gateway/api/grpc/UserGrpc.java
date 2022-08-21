@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class UserGrpc {
 
-    @GrpcClient("cloud-grpc-server")
+    @GrpcClient("user-service")
     private UserServiceGrpc.UserServiceBlockingStub serviceBlockingStub;
 
     public List<UserServiceOuterClass.User> getProtoUsers() {

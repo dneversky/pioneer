@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -26,7 +25,7 @@ public class TeamService {
         this.userService = userService;
     }
 
-    public Collection<Team> getTeams() {
+    public List<Team> getTeams() {
         List<Team> teams = new ArrayList<>();
         List<TeamServiceOuterClass.Team> protoTeams = teamGrpc.getProtoTeams();
         for(TeamServiceOuterClass.Team protoTeam : protoTeams) {

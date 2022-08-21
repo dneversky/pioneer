@@ -23,12 +23,11 @@
 		<dependency>
 			<groupId>net.devh</groupId>
 			<artifactId>grpc-server-spring-boot-starter</artifactId>
-			<version>2.13.1.RELEASE</version>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>pioneer-user</finalName>
+		<finalName>pioneer-specs</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

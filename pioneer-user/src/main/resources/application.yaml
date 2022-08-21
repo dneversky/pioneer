@@ -8,7 +8,7 @@ spring:
     url: jdbc:mysql://localhost:3306/piousers
     username: root
     password: root
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -21,5 +21,10 @@ eureka:
       defaultZone: http://localhost:8081/eureka
 
 grpc:
+  cloud-grpc-server:
+    address: 'discovery://api-gateway'
+    enableKeepAlive: true
+    keepAliveWithoutCalls: true
+    negotiationType: plaintext
   server:
     port: 0

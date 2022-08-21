@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class SpecGrpc {
 
-    @GrpcClient("cloud-grpc-server")
+    @GrpcClient("spec-service")
     private SpecServiceGrpc.SpecServiceBlockingStub serviceBlockingStub;
 
     public List<SpecServiceOuterClass.Spec> getProtoSpecsByIds(Collection<String> specsIds) {

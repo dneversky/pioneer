@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class TeamGrpc {
 
-    @GrpcClient("...")
+    @GrpcClient("team-service")
     private TeamServiceGrpc.TeamServiceBlockingStub blockingStub;
 
     public List<TeamServiceOuterClass.Team> getProtoTeams() {
