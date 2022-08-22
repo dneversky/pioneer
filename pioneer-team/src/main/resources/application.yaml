@@ -17,13 +17,8 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka
+      defaultZone: http://localhost:8080/eureka
 
 grpc:
-  cloud-grpc-server:
-    address: 'discovery://api-gateway'
-    enableKeepAlive: true
-    keepAliveWithoutCalls: true
-    negotiationType: plaintext
   server:
     port: 0
