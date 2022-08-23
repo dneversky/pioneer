@@ -33,8 +33,78 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
+    public void getUserById(UserServiceOuterClass.UserId request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.getUserById(request.getId());
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void createUser(UserServiceOuterClass.NewUser request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
         User user = userService.saveUser(UserConverter.convert(request));
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void updateUser(UserServiceOuterClass.User request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.updateUser(UserConverter.convert(request));
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void patchRole(UserServiceOuterClass.UserRole request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.patchRole(request.getUserId(), request.getRoleNameList().stream().map(String::valueOf).collect(Collectors.toSet()));
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void patchPassword(UserServiceOuterClass.UserPassword request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.patchPassword(request.getUserId(), request.getOldPassword(), request.getNewPassword());
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void deleteUser(UserServiceOuterClass.UserId request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        userService.deleteUser(request.getId());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void addTeam(UserServiceOuterClass.UserTeamIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.setTeam(request.getUserId(), request.getTeamId());
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void addSpecs(UserServiceOuterClass.UserSpecsIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.addSpecs(request.getUserId(), request.getSpecsIdsList().stream().map(String::valueOf).collect(Collectors.toSet()));
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void removeTeam(UserServiceOuterClass.UserTeamIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.removeTeam(request.getUserId(), request.getTeamId());
+        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void removeSpecs(UserServiceOuterClass.UserSpecsIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.removeSpecs(request.getUserId(), request.getSpecsIdsList().stream().map(String::valueOf).collect(Collectors.toSet()));
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
         responseObserver.onNext(response);
         responseObserver.onCompleted();

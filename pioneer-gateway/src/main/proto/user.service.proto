@@ -11,8 +11,8 @@ message UserId {
   int64 id = 1;
 }
 
-message UsersIds {
-  repeated int64 ids = 1;
+message UserIds {
+  repeated int64 id = 1;
 }
 
 message User {
@@ -22,15 +22,43 @@ message User {
   repeated string specsIds = 4;
 }
 
+message UserRole {
+  int64 userId = 1;
+  repeated string roleName = 2;
+}
+
+message UserPassword {
+  int64 userId = 1;
+  string oldPassword = 2;
+  string newPassword = 3;
+}
+
 message NewUser {
   string nickname = 1;
   string username = 2;
   string password = 3;
 }
 
+message UserTeamIds {
+  int64 userId = 1;
+  string teamId = 2;
+}
+
+message UserSpecsIds {
+  int64 userId = 1;
+  repeated string specsIds = 2;
+}
+
 service UserService {
-  rpc getUserById(UserId) returns (User);
-  rpc getUsersByIds(UsersIds) returns (Users);
-  rpc createUser(NewUser) returns (User);
   rpc getUsers(EmptyUser) returns (Users);
+  rpc getUserById(UserId) returns (User);
+  rpc createUser(NewUser) returns (User);
+  rpc updateUser(User) returns (User);
+  rpc patchRole(UserRole) returns (User);
+  rpc patchPassword(UserPassword) returns (User);
+  rpc deleteUser(UserId) returns (User);
+  rpc addTeam(UserTeamIds) returns (User);
+  rpc addSpecs(UserSpecsIds) returns (User);
+  rpc removeTeam(UserTeamIds) returns (User);
+  rpc removeSpecs(UserSpecsIds) returns (User);
 }
