@@ -1,4 +1,4 @@
-package dev.dneversky.pioneer.gateway.api.grpc;
+package dev.dneversky.pioneer.gateway.api.grpc.impl;
 
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.Team;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class TeamGrpc {
+public class TeamGrpcImpl {
 
     @GrpcClient("team-service")
     private TeamServiceGrpc.TeamServiceBlockingStub blockingStub;

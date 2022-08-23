@@ -1,6 +1,6 @@
-package dev.dneversky.pioneer.gateway.service;
+package dev.dneversky.pioneer.gateway.service.impl;
 
-import dev.dneversky.pioneer.gateway.api.grpc.TeamGrpc;
+import dev.dneversky.pioneer.gateway.api.grpc.impl.TeamGrpcImpl;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.Team;
 import dev.dneversky.pioneer.gateway.model.User;
@@ -12,22 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TeamService {
+public class TeamServiceImpl {
 
-    private final TeamGrpc teamGrpc;
-    private final SpecService specService;
-    private final UserService userService;
+    private final TeamGrpcImpl teamGrpcImpl;
+    private final SpecServiceImpl specServiceImpl;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public TeamService(TeamGrpc teamGrpc, SpecService specService, UserService userService) {
-        this.teamGrpc = teamGrpc;
-        this.specService = specService;
-        this.userService = userService;
+    public TeamServiceImpl(TeamGrpcImpl teamGrpcImpl, SpecServiceImpl specServiceImpl, UserServiceImpl userServiceImpl) {
+        this.teamGrpcImpl = teamGrpcImpl;
+        this.specServiceImpl = specServiceImpl;
+        this.userServiceImpl = userServiceImpl;
     }
 
     public List<Team> getTeams() {
         List<Team> teams = new ArrayList<>();
-        List<TeamServiceOuterClass.Team> protoTeams = teamGrpc.getProtoTeams();
+        List<TeamServiceOuterClass.Team> protoTeams = teamGrpcImpl.getProtoTeams();
         for(TeamServiceOuterClass.Team protoTeam : protoTeams) {
             Team team = new Team();
             team.setSpecs(getSpecsWithProtoTeam(protoTeam));
@@ -38,7 +38,7 @@ public class TeamService {
     }
 
     public Team createTeam(Team team) {
-        TeamServiceOuterClass.Team newProtoTeam = teamGrpc.createTeam(team);
+        TeamServiceOuterClass.Team newProtoTeam = teamGrpcImpl.createTeam(team);
         Team newTeam = new Team();
         newTeam.setId(newProtoTeam.getId());
         newTeam.setMembers(getUsersWithProtoTeam(newProtoTeam));
@@ -47,10 +47,10 @@ public class TeamService {
     }
 
     private List<Spec> getSpecsWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
-        return specService.getSpecsByIds(protoTeam.getSpecsIdsList());
+        return specServiceImpl.getSpecsByIds(protoTeam.getSpecsIdsList());
     }
 
     private List<User> getUsersWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
-        return userService.getUsersByIds(protoTeam.getMembersIdsList());
+        return userServiceImpl.getUsersByIds(protoTeam.getMembersIdsList());
     }
 }

@@ -12,7 +12,7 @@ message UserId {
 }
 
 message UserIds {
-  repeated int64 id = 1;
+  repeated int64 ids = 1;
 }
 
 message User {
@@ -50,6 +50,7 @@ message UserSpecsIds {
 }
 
 service UserService {
+  rpc getUsersByIds(UserIds) returns (Users);
   rpc getUsers(EmptyUser) returns (Users);
   rpc getUserById(UserId) returns (User);
   rpc createUser(NewUser) returns (User);

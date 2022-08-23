@@ -1,4 +1,4 @@
-package dev.dneversky.pioneer.gateway.api.grpc;
+package dev.dneversky.pioneer.gateway.api.grpc.impl;
 
 import dev.dneversky.pioneer.gateway.model.Spec;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-public class SpecGrpc {
+public class SpecGrpcImpl {
 
     @GrpcClient("spec-service")
     private SpecServiceGrpc.SpecServiceBlockingStub serviceBlockingStub;

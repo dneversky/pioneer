@@ -1,36 +1,21 @@
 package dev.dneversky.pioneer.gateway.api.grpc;
 
 import dev.dneversky.pioneer.gateway.model.NewUser;
-import net.devh.boot.grpc.client.inject.GrpcClient;
-import org.dneversky.gateway.UserServiceGrpc;
+import dev.dneversky.pioneer.gateway.model.User;
 import org.dneversky.gateway.UserServiceOuterClass;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
 
-@Component
-public class UserGrpc {
-
-    @GrpcClient("user-service")
-    private UserServiceGrpc.UserServiceBlockingStub serviceBlockingStub;
-
-    public List<UserServiceOuterClass.User> getProtoUsers() {
-        UserServiceOuterClass.Users response = serviceBlockingStub
-                .getUsers(UserServiceOuterClass.EmptyUser.newBuilder().build());
-        return response.getUsersList();
-    }
-
-    public List<UserServiceOuterClass.User> getProtoUsersByIds(Collection<Long> userIds) {
-        UserServiceOuterClass.Users response = serviceBlockingStub
-                .getUsersByIds(UserServiceOuterClass.UsersIds.newBuilder().addAllIds(userIds).build());
-        return response.getUsersList();
-    }
-
-    public UserServiceOuterClass.User createUser(NewUser newUser) {
-        return serviceBlockingStub.createUser(UserServiceOuterClass.NewUser.newBuilder()
-                        .setNickname(newUser.getNickname())
-                        .setUsername(newUser.getUsername())
-                        .setPassword(newUser.getPassword()).build());
-    }
+public interface UserGrpc {
+    Collection<UserServiceOuterClass.User> getUsers();
+    UserServiceOuterClass.User getUserById(long userId);
+    UserServiceOuterClass.User createUser(NewUser newUser);
+    UserServiceOuterClass.User updateUser(User user);
+    UserServiceOuterClass.User patchRoles(long userId, Collection<String> roleNames);
+    UserServiceOuterClass.User patchPassword(long userId, String oldPassword, String newPassword);
+    UserServiceOuterClass.User deleteUser(long userId);
+    UserServiceOuterClass.User addTeam(long userId, String teamId);
+    UserServiceOuterClass.User addSpecs(long userId, Collection<String> specsIds);
+    UserServiceOuterClass.User removeTeam(long userId, String teamId);
+    UserServiceOuterClass.User removeSpecs(long userId, Collection<String> specsIds);
 }

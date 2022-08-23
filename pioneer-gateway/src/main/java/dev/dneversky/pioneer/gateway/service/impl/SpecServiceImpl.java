@@ -1,6 +1,6 @@
-package dev.dneversky.pioneer.gateway.service;
+package dev.dneversky.pioneer.gateway.service.impl;
 
-import dev.dneversky.pioneer.gateway.api.grpc.SpecGrpc;
+import dev.dneversky.pioneer.gateway.api.grpc.impl.SpecGrpcImpl;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import org.dneversky.gateway.SpecServiceOuterClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,22 +11,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SpecService {
+public class SpecServiceImpl {
 
-    private final SpecGrpc specGrpc;
+    private final SpecGrpcImpl specGrpcImpl;
 
     @Autowired
-    public SpecService(SpecGrpc specGrpc) {
-        this.specGrpc = specGrpc;
+    public SpecServiceImpl(SpecGrpcImpl specGrpcImpl) {
+        this.specGrpcImpl = specGrpcImpl;
     }
 
     public List<Spec> getSpecsByIds(Collection<String> ids) {
-        List<SpecServiceOuterClass.Spec> specs = specGrpc.getProtoSpecsByIds(ids);
+        List<SpecServiceOuterClass.Spec> specs = specGrpcImpl.getProtoSpecsByIds(ids);
         return specs.stream().map(Spec::new).collect(Collectors.toList());
     }
 
     public Spec createSpec(Spec spec) {
-        SpecServiceOuterClass.Spec newProtoSpec = specGrpc.createSpec(spec);
+        SpecServiceOuterClass.Spec newProtoSpec = specGrpcImpl.createSpec(spec);
         return new Spec(newProtoSpec);
     }
 }
