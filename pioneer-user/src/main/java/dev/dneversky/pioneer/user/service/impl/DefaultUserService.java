@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,8 +44,10 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User saveUser(User user) {
-        userRepository.findByDetailsUsername(user.getDetails().getUsername()).orElseThrow(
-                () -> new UserWithUsernameExistsException(user.getDetails().getUsername()));
+        Optional<User> findUser = userRepository.findByDetailsUsername(user.getDetails().getUsername());
+        if(findUser.isPresent()) {
+            throw new UserWithUsernameExistsException(user.getDetails().getUsername());
+        }
         user.setDetails(createUserDetails(user.getDetails()));
 
         return userRepository.save(user);

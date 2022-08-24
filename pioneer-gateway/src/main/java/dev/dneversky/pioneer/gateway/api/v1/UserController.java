@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}/roles")
-    public User patchRoles(@PathVariable long userId, Set<String> roleNames) {
+    public User patchRoles(@PathVariable long userId, @RequestParam Set<String> roleNames) {
         return userServiceImpl.changeRoles(userId, roleNames);
     }
 
@@ -57,12 +57,12 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}/team")
-    public User patchTeam(@PathVariable long userId, String teamId) {
+    public User patchTeam(@PathVariable long userId, @RequestParam String teamId) {
         return userServiceImpl.changeTeam(userId, teamId);
     }
 
     @PatchMapping("/{userId}/specs")
-    public User patchSpecs(@PathVariable long userId, Set<String> specsIds) {
+    public User patchSpecs(@PathVariable long userId, @RequestParam Set<String> specsIds) {
         return userServiceImpl.changeSpecs(userId, specsIds);
     }
 }
