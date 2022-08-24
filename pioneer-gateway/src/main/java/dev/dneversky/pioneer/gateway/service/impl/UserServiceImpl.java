@@ -64,38 +64,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User patchRoles(long userId, Collection<String> roleNames) {
-        return constructUserWithProtoUser(userGrpcImpl.patchRoles(userId, roleNames));
+    public User changeRoles(long userId, Collection<String> roleNames) {
+        return constructUserWithProtoUser(userGrpcImpl.changeRoles(userId, roleNames));
     }
 
     @Override
-    public User patchPassword(long userId, String oldPassword, String newPassword) {
-        return constructUserWithProtoUser(userGrpcImpl.patchPassword(userId, oldPassword, newPassword));
+    public User changePassword(long userId, String oldPassword, String newPassword) {
+        return constructUserWithProtoUser(userGrpcImpl.changePassword(userId, oldPassword, newPassword));
     }
 
     @Override
-    public User deleteUser(long userId) {
-        return constructUserWithProtoUser(userGrpcImpl.deleteUser(userId));
+    public void deleteUser(long userId) {
+        constructUserWithProtoUser(userGrpcImpl.deleteUser(userId));
     }
 
     @Override
-    public User addTeam(long userId, String teamId) {
-        return constructUserWithProtoUser(userGrpcImpl.addTeam(userId, teamId));
+    public User changeTeam(long userId, String teamId) {
+        return constructUserWithProtoUser(userGrpcImpl.changeTeam(userId, teamId));
     }
 
     @Override
-    public User addSpecs(long userId, Collection<String> specsIds) {
-        return constructUserWithProtoUser(userGrpcImpl.addSpecs(userId, specsIds));
-    }
-
-    @Override
-    public User removeTeam(long userId, String teamId) {
-        return constructUserWithProtoUser(userGrpcImpl.removeTeam(userId, teamId));
-    }
-
-    @Override
-    public User removeSpecs(long userId, Collection<String> specsIds) {
-        return constructUserWithProtoUser(userGrpcImpl.removeSpecs(userId, specsIds));
+    public User changeSpecs(long userId, Collection<String> specsIds) {
+        return constructUserWithProtoUser(userGrpcImpl.changeSpecs(userId, specsIds));
     }
 
     private User constructUserWithProtoUser(UserServiceOuterClass.User protoUser) {

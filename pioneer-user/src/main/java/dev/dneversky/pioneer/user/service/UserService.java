@@ -8,14 +8,13 @@ import java.util.Set;
 
 public interface UserService {
     List<User> getUsers();
+    List<User> getUsersByIds(Collection<Long> ids);
     User getUserById(long id);
     User saveUser(User user);
     User updateUser(User user);
-    User patchRole(long userId, Collection<String> roleNames);
-    User patchPassword(long userId, String oldPassword, String newPassword);
+    User changeRoles(long userId, Collection<String> roleNames);
+    User changePassword(long userId, String oldPassword, String newPassword);
     void deleteUser(long id);
-    User setTeam(long userId, String teamId);
-    User removeTeam(long userId, String teamId);
-    User addSpecs(long userId, Set<String> specs);
-    User removeSpecs(long userId, Set<String> specs);
+    User changeTeam(long userId, String teamId);
+    User changeSpecs(long userId, Set<String> specs);
 }

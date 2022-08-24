@@ -55,14 +55,14 @@ public class UserGrpcImpl implements UserGrpc {
     }
 
     @Override
-    public UserServiceOuterClass.User patchRoles(long userId, Collection<String> roleNames) {
-        return serviceBlockingStub.patchRole(UserServiceOuterClass.UserRole.newBuilder()
+    public UserServiceOuterClass.User changeRoles(long userId, Collection<String> roleNames) {
+        return serviceBlockingStub.changeRoles(UserServiceOuterClass.UserRole.newBuilder()
                 .setUserId(userId).addAllRoleName(roleNames).build());
     }
 
     @Override
-    public UserServiceOuterClass.User patchPassword(long userId, String oldPassword, String newPassword) {
-        return serviceBlockingStub.patchPassword(UserServiceOuterClass.UserPassword.newBuilder()
+    public UserServiceOuterClass.User changePassword(long userId, String oldPassword, String newPassword) {
+        return serviceBlockingStub.changePassword(UserServiceOuterClass.UserPassword.newBuilder()
                 .setUserId(userId).setOldPassword(oldPassword).setNewPassword(newPassword).build());
     }
 
@@ -72,26 +72,14 @@ public class UserGrpcImpl implements UserGrpc {
     }
 
     @Override
-    public UserServiceOuterClass.User addTeam(long userId, String teamId) {
-        return serviceBlockingStub.addTeam(UserServiceOuterClass.UserTeamIds.newBuilder()
+    public UserServiceOuterClass.User changeTeam(long userId, String teamId) {
+        return serviceBlockingStub.changeTeam(UserServiceOuterClass.UserTeamIds.newBuilder()
                 .setUserId(userId).setTeamId(teamId).build());
     }
 
     @Override
-    public UserServiceOuterClass.User addSpecs(long userId, Collection<String> specsIds) {
-        return serviceBlockingStub.addSpecs(UserServiceOuterClass.UserSpecsIds.newBuilder()
-                .setUserId(userId).addAllSpecsIds(specsIds).build());
-    }
-
-    @Override
-    public UserServiceOuterClass.User removeTeam(long userId, String teamId) {
-        return serviceBlockingStub.removeTeam(UserServiceOuterClass.UserTeamIds.newBuilder()
-                .setUserId(userId).setTeamId(teamId).build());
-    }
-
-    @Override
-    public UserServiceOuterClass.User removeSpecs(long userId, Collection<String> specsIds) {
-        return serviceBlockingStub.removeSpecs(UserServiceOuterClass.UserSpecsIds.newBuilder()
+    public UserServiceOuterClass.User changeSpecs(long userId, Collection<String> specsIds) {
+        return serviceBlockingStub.changeSpecs(UserServiceOuterClass.UserSpecsIds.newBuilder()
                 .setUserId(userId).addAllSpecsIds(specsIds).build());
     }
 }

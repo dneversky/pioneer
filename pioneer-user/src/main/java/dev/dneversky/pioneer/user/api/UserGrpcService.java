@@ -33,6 +33,15 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
+    public void getUsersByIds(UserServiceOuterClass.UserIds request, StreamObserver<UserServiceOuterClass.Users> responseObserver) {
+        List<User> users = userService.getUsersByIds(request.getIdsList());
+        UserServiceOuterClass.Users response = UserServiceOuterClass.Users.newBuilder()
+                .addAllUsers(users.stream().map(ProtoUserConverter::convert).collect(Collectors.toList())).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void getUserById(UserServiceOuterClass.UserId request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
         User user = userService.getUserById(request.getId());
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
@@ -57,16 +66,16 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void patchRole(UserServiceOuterClass.UserRole request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
-        User user = userService.patchRole(request.getUserId(), request.getRoleNameList().stream().map(String::valueOf).collect(Collectors.toSet()));
+    public void changeRoles(UserServiceOuterClass.UserRole request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.changeRoles(request.getUserId(), request.getRoleNameList().stream().map(String::valueOf).collect(Collectors.toSet()));
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
     @Override
-    public void patchPassword(UserServiceOuterClass.UserPassword request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
-        User user = userService.patchPassword(request.getUserId(), request.getOldPassword(), request.getNewPassword());
+    public void changePassword(UserServiceOuterClass.UserPassword request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.changePassword(request.getUserId(), request.getOldPassword(), request.getNewPassword());
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -79,32 +88,16 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void addTeam(UserServiceOuterClass.UserTeamIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
-        User user = userService.setTeam(request.getUserId(), request.getTeamId());
+    public void changeTeam(UserServiceOuterClass.UserTeamIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.changeTeam(request.getUserId(), request.getTeamId());
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
     @Override
-    public void addSpecs(UserServiceOuterClass.UserSpecsIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
-        User user = userService.addSpecs(request.getUserId(), request.getSpecsIdsList().stream().map(String::valueOf).collect(Collectors.toSet()));
-        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
-    }
-
-    @Override
-    public void removeTeam(UserServiceOuterClass.UserTeamIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
-        User user = userService.removeTeam(request.getUserId(), request.getTeamId());
-        UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
-    }
-
-    @Override
-    public void removeSpecs(UserServiceOuterClass.UserSpecsIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
-        User user = userService.removeSpecs(request.getUserId(), request.getSpecsIdsList().stream().map(String::valueOf).collect(Collectors.toSet()));
+    public void changeSpecs(UserServiceOuterClass.UserSpecsIds request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+        User user = userService.changeSpecs(request.getUserId(), request.getSpecsIdsList().stream().map(String::valueOf).collect(Collectors.toSet()));
         UserServiceOuterClass.User response = ProtoUserConverter.convert(user);
         responseObserver.onNext(response);
         responseObserver.onCompleted();

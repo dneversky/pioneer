@@ -36,6 +36,11 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    public List<User> getUsersByIds(Collection<Long> ids) {
+        return userRepository.findAllById(ids);
+    }
+
+    @Override
     public User getUserById(long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
     }
@@ -56,14 +61,14 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User patchRole(long userId, Collection<String> roleNames) {
+    public User changeRoles(long userId, Collection<String> roleNames) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.getDetails().setRoles(roleNames.stream().map(Role::valueOf).collect(Collectors.toSet()));
         return userRepository.save(user);
     }
 
     @Override
-    public User patchPassword(long userId, String oldPassword, String newPassword) {
+    public User changePassword(long userId, String oldPassword, String newPassword) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         String encodedOldPassword = passwordEncoder.encode(oldPassword);
         if(!user.getDetails().getPassword().equals(encodedOldPassword)) {
@@ -89,7 +94,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User setTeam(long userId, String teamId) {
+    public User changeTeam(long userId, String teamId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.setTeamId(teamId);
 
@@ -97,26 +102,9 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User removeTeam(long userId, String teamId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserWithIdNotFoundException(userId));
-        user.setTeamId(null);
-
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User addSpecs(long userId, Set<String> specs) {
+    public User changeSpecs(long userId, Set<String> specs) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
-        user.getSpecs().addAll(specs);
-
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User removeSpecs(long userId, Set<String> specs) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
-        user.getSpecs().removeAll(specs);
+        user.setSpecs(specs);
 
         return userRepository.save(user);
     }
