@@ -12,4 +12,11 @@ public class SpecConverter {
         spec.setDescription(protoSpec.getDescription());
         return spec;
     }
+
+    public static Spec convert(SpecServiceOuterClass.NewSpec protoSpec) {
+        Spec spec = new Spec();
+        spec.setName(protoSpec.getName());
+        spec.setDescription(protoSpec.getDescription());
+        return spec;
+    }
 }

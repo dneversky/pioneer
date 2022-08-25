@@ -8,7 +8,6 @@ import java.util.List;
 public interface SpecService {
     List<Spec> findSpecsByIds(Collection<String> ids);
     List<Spec> findSpecs();
-    Spec findSpecById(String id);
     Spec saveSpec(Spec spec);
     Spec updateSpec(Spec spec);
     void deleteSpec(String id);

@@ -44,11 +44,6 @@ public class DefaultSpecService implements SpecService {
     }
 
     @Override
-    public Spec findSpecById(String id) {
-        return specRepository.findById(id).orElseThrow(() -> new SpecWithIdNotFoundException(id));
-    }
-
-    @Override
     public Spec saveSpec(Spec spec) {
         return specRepository.save(spec);
     }

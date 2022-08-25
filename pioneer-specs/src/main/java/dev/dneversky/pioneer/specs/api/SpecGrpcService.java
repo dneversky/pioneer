@@ -24,8 +24,8 @@ public class SpecGrpcService extends SpecServiceGrpc.SpecServiceImplBase {
     }
 
     @Override
-    public void getSpecsByIds(SpecServiceOuterClass.SpecsIds request, StreamObserver<SpecServiceOuterClass.Specs> responseObserver) {
-        List<Spec> specs = specService.findSpecsByIds(request.getIdsList());
+    public void getSpecs(SpecServiceOuterClass.EmptySpec request, StreamObserver<SpecServiceOuterClass.Specs> responseObserver) {
+        List<Spec> specs = specService.findSpecs();
         SpecServiceOuterClass.Specs response = SpecServiceOuterClass.Specs.newBuilder()
                 .addAllSpecs(specs.stream().map(SpecProtoConverter::convert).collect(Collectors.toList())).build();
         responseObserver.onNext(response);
@@ -33,9 +33,34 @@ public class SpecGrpcService extends SpecServiceGrpc.SpecServiceImplBase {
     }
 
     @Override
-    public void createSpec(SpecServiceOuterClass.Spec request, StreamObserver<SpecServiceOuterClass.Spec> responseObserver) {
+    public void createSpec(SpecServiceOuterClass.NewSpec request, StreamObserver<SpecServiceOuterClass.Spec> responseObserver) {
         Spec spec = specService.saveSpec(SpecConverter.convert(request));
         SpecServiceOuterClass.Spec response = SpecProtoConverter.convert(spec);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void updateSpec(SpecServiceOuterClass.Spec request, StreamObserver<SpecServiceOuterClass.Spec> responseObserver) {
+        Spec spec = specService.updateSpec(SpecConverter.convert(request));
+        SpecServiceOuterClass.Spec response = SpecProtoConverter.convert(spec);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void deleteSpec(SpecServiceOuterClass.SpecId request, StreamObserver<SpecServiceOuterClass.EmptySpec> responseObserver) {
+        specService.deleteSpec(request.getId());
+        SpecServiceOuterClass.EmptySpec response = SpecServiceOuterClass.EmptySpec.newBuilder().build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getSpecsByIds(SpecServiceOuterClass.SpecsIds request, StreamObserver<SpecServiceOuterClass.Specs> responseObserver) {
+        List<Spec> specs = specService.findSpecsByIds(request.getIdsList());
+        SpecServiceOuterClass.Specs response = SpecServiceOuterClass.Specs.newBuilder()
+                .addAllSpecs(specs.stream().map(SpecProtoConverter::convert).collect(Collectors.toList())).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
