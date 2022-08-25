@@ -3,16 +3,19 @@ package dev.dneversky.pioneer.gateway.service.impl;
 import dev.dneversky.pioneer.gateway.api.grpc.impl.TeamGrpcImpl;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.Team;
+import dev.dneversky.pioneer.gateway.model.TeamBody;
 import dev.dneversky.pioneer.gateway.model.User;
+import dev.dneversky.pioneer.gateway.service.TeamService;
 import org.dneversky.gateway.TeamServiceOuterClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
-public class TeamServiceImpl {
+public class TeamServiceImpl implements TeamService {
 
     private final TeamGrpcImpl teamGrpcImpl;
     private final SpecServiceImpl specServiceImpl;
@@ -26,24 +29,37 @@ public class TeamServiceImpl {
     }
 
     public List<Team> getTeams() {
-        List<Team> teams = new ArrayList<>();
-        List<TeamServiceOuterClass.Team> protoTeams = teamGrpcImpl.getProtoTeams();
-        for(TeamServiceOuterClass.Team protoTeam : protoTeams) {
-            Team team = new Team();
-            team.setSpecs(getSpecsWithProtoTeam(protoTeam));
-            team.setMembers(getUsersWithProtoTeam(protoTeam));
-            teams.add(team);
-        }
-        return teams;
+        return constructTeamsWithProtoTeams(teamGrpcImpl.getTeams());
     }
 
-    public Team createTeam(Team team) {
-        TeamServiceOuterClass.Team newProtoTeam = teamGrpcImpl.createTeam(team);
-        Team newTeam = new Team();
-        newTeam.setId(newProtoTeam.getId());
-        newTeam.setMembers(getUsersWithProtoTeam(newProtoTeam));
-        newTeam.setSpecs(getSpecsWithProtoTeam(newProtoTeam));
-        return newTeam;
+    @Override
+    public Team getTeamById(String teamId) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.getTeamById(teamId));
+    }
+
+    @Override
+    public Team createTeam(TeamBody teamBody) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.createTeam(teamBody));
+    }
+
+    @Override
+    public Team updateTeam(Team team) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.updateTeam(team));
+    }
+
+    @Override
+    public void deleteTeam(String teamId) {
+        teamGrpcImpl.deleteTeam(teamId);
+    }
+
+    @Override
+    public Team changeSpecs(Collection<String> specsIds) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.changeSpecs(specsIds));
+    }
+
+    @Override
+    public Team changeMembers(Collection<Long> membersIds) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.changeMembers(membersIds));
     }
 
     private List<Spec> getSpecsWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
@@ -52,5 +68,23 @@ public class TeamServiceImpl {
 
     private List<User> getUsersWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
         return userServiceImpl.getUsersByIds(protoTeam.getMembersIdsList());
+    }
+
+    private Team constructTeamWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
+        Team team = new Team();
+        team.setMembers(getUsersWithProtoTeam(protoTeam));
+        team.setSpecs(getSpecsWithProtoTeam(protoTeam));
+        return team;
+    }
+
+    private List<Team> constructTeamsWithProtoTeams(List<TeamServiceOuterClass.Team> protoTeams) {
+        List<Team> teams = new ArrayList<>();
+        for(TeamServiceOuterClass.Team protoTeam : protoTeams) {
+            Team team = new Team();
+            team.setSpecs(getSpecsWithProtoTeam(protoTeam));
+            team.setMembers(getUsersWithProtoTeam(protoTeam));
+            teams.add(team);
+        }
+        return teams;
     }
 }

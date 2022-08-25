@@ -17,12 +17,27 @@ message Team {
   repeated string specsIds = 3;
 }
 
-message NewTeam {
+message TeamBody {
   repeated int64 membersIds = 1;
   repeated string specsIds = 2;
 }
 
+message TeamSpecs {
+  string teamId = 1;
+  repeated string specsIds = 2;
+}
+
+message TeamMembers {
+  string teamId = 1;
+  repeated int64 membersIds = 2;
+}
+
 service TeamService {
   rpc getTeams(EmptyTeam) returns (Teams);
-  rpc createTeam(NewTeam) returns (Team);
+  rpc getTeamById(TeamId) returns (Team);
+  rpc createTeam(TeamBody) returns (Team);
+  rpc updateTeam(Team) returns (Team);
+  rpc deleteTeam(TeamId) returns (EmptyTeam);
+  rpc changeSpecs(TeamSpecs) returns (Team);
+  rpc changeMembers(TeamMembers) returns (Team);
 }
