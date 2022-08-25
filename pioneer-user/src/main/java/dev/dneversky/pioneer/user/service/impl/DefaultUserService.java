@@ -3,7 +3,7 @@ package dev.dneversky.pioneer.user.service.impl;
 import dev.dneversky.pioneer.user.entity.Role;
 import dev.dneversky.pioneer.user.entity.User;
 import dev.dneversky.pioneer.user.entity.UserDetails;
-import dev.dneversky.pioneer.user.exception.UnequalPasswords;
+import dev.dneversky.pioneer.user.exception.UnequalPasswordsException;
 import dev.dneversky.pioneer.user.exception.UserWithIdNotFoundException;
 import dev.dneversky.pioneer.user.exception.UserWithUsernameExistsException;
 import dev.dneversky.pioneer.user.repository.UserRepository;
@@ -71,7 +71,7 @@ public class DefaultUserService implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         String encodedOldPassword = passwordEncoder.encode(oldPassword);
         if(!user.getDetails().getPassword().equals(encodedOldPassword)) {
-            throw new UnequalPasswords("Old and current passwords are not equal.");
+            throw new UnequalPasswordsException("Old and current passwords are not equal.");
         }
         user.getDetails().setPassword(encodedOldPassword);
         return userRepository.save(user);
