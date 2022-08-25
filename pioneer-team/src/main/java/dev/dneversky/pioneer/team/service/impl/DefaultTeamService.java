@@ -7,6 +7,7 @@ import dev.dneversky.pioneer.team.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -20,13 +21,18 @@ public class DefaultTeamService implements TeamService {
     }
 
     @Override
-    public List<Team> findTeams() {
+    public List<Team> getTeams() {
         return teamRepository.findAll();
     }
 
     @Override
-    public Team findTeamById(String teamId) {
+    public Team getTeamById(String teamId) {
         return teamRepository.findById(teamId).orElseThrow(() -> new TeamWithIdNotFoundException(teamId));
+    }
+
+    @Override
+    public Team saveTeam(Team team) {
+        return teamRepository.save(team);
     }
 
     @Override
@@ -36,13 +42,22 @@ public class DefaultTeamService implements TeamService {
     }
 
     @Override
-    public Team saveTeam(Team team) {
+    public void deleteTeam(String teamId) {
+        Team findTeam = teamRepository.findById(teamId).orElseThrow(() -> new TeamWithIdNotFoundException(teamId));
+        teamRepository.delete(findTeam);
+    }
+
+    @Override
+    public Team changeSpecs(String teamId, Collection<String> specsIds) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamWithIdNotFoundException(teamId));
+        team.setSpecs(specsIds);
         return teamRepository.save(team);
     }
 
     @Override
-    public void deleteTeam(String teamId) {
-        Team findTeam = teamRepository.findById(teamId).orElseThrow(() -> new TeamWithIdNotFoundException(teamId));
-        teamRepository.delete(findTeam);
+    public Team changeMembers(String teamId, Collection<Long> membersIds) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamWithIdNotFoundException(teamId));
+        team.setMembers(membersIds);
+        return teamRepository.save(team);
     }
 }

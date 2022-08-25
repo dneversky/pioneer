@@ -25,7 +25,7 @@ public class TeamGrpcService extends TeamServiceGrpc.TeamServiceImplBase {
 
     @Override
     public void getTeams(org.dneversky.gateway.TeamServiceOuterClass.EmptyTeam request, StreamObserver<org.dneversky.gateway.TeamServiceOuterClass.Teams> responseObserver) {
-        List<Team> teams = teamService.findTeams();
+        List<Team> teams = teamService.getTeams();
         TeamServiceOuterClass.Teams response = TeamServiceOuterClass.Teams.newBuilder()
                 .addAllTeams(teams.stream().map(ProtoTeamConverter::convert).collect(Collectors.toList())).build();
         responseObserver.onNext(response);
@@ -33,8 +33,48 @@ public class TeamGrpcService extends TeamServiceGrpc.TeamServiceImplBase {
     }
 
     @Override
-    public void createTeam(TeamServiceOuterClass.NewTeam request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
+    public void getTeamById(TeamServiceOuterClass.TeamId request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
+        Team team = teamService.getTeamById(request.getId());
+        TeamServiceOuterClass.Team response = ProtoTeamConverter.convert(team);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void createTeam(TeamServiceOuterClass.TeamBody request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
         Team team = teamService.saveTeam(TeamConverter.convert(request));
+        TeamServiceOuterClass.Team response = ProtoTeamConverter.convert(team);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void updateTeam(TeamServiceOuterClass.Team request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
+        Team team = teamService.updateTeam(TeamConverter.convert(request));
+        TeamServiceOuterClass.Team response = ProtoTeamConverter.convert(team);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void deleteTeam(TeamServiceOuterClass.TeamId request, StreamObserver<TeamServiceOuterClass.EmptyTeam> responseObserver) {
+        teamService.deleteTeam(request.getId());
+        TeamServiceOuterClass.EmptyTeam response = TeamServiceOuterClass.EmptyTeam.newBuilder().build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void changeSpecs(TeamServiceOuterClass.TeamSpecs request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
+        Team team = teamService.changeSpecs(request.getTeamId(), request.getSpecsIdsList());
+        TeamServiceOuterClass.Team response = ProtoTeamConverter.convert(team);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void changeMembers(TeamServiceOuterClass.TeamMembers request, StreamObserver<TeamServiceOuterClass.Team> responseObserver) {
+        Team team = teamService.changeMembers(request.getTeamId(), request.getMembersIdsList());
         TeamServiceOuterClass.Team response = ProtoTeamConverter.convert(team);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
