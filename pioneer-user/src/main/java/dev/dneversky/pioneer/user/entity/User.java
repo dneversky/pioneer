@@ -21,7 +21,7 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private UserDetails details;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_spec", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "spec_id")
     private Set<String> specs = new HashSet<>();

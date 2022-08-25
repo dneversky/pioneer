@@ -21,7 +21,7 @@ public class UserConverter {
     public static User convert(UserServiceOuterClass.User protoUser) {
         User user = new User();
         user.setId(protoUser.getId());
-        user.setNickname(user.getNickname());
+        user.setNickname(protoUser.getNickname());
         user.setTeamId(protoUser.getTeamId());
         user.setSpecs(protoUser.getSpecsIdsList().stream().map(String::valueOf).collect(Collectors.toSet()));
         return user;

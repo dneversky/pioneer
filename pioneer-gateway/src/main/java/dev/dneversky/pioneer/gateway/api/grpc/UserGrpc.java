@@ -13,7 +13,7 @@ public interface UserGrpc {
     UserServiceOuterClass.User updateUser(User user);
     UserServiceOuterClass.User changeRoles(long userId, Collection<String> roleNames);
     UserServiceOuterClass.User changePassword(long userId, String oldPassword, String newPassword);
-    UserServiceOuterClass.User deleteUser(long userId);
+    UserServiceOuterClass.EmptyUser deleteUser(long userId);
     UserServiceOuterClass.User changeTeam(long userId, String teamId);
     UserServiceOuterClass.User changeSpecs(long userId, Collection<String> specsIds);
 }

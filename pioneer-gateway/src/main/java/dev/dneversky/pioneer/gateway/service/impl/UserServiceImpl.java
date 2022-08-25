@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(long userId) {
-        constructUserWithProtoUser(userGrpcImpl.deleteUser(userId));
+        userGrpcImpl.deleteUser(userId);
     }
 
     @Override

@@ -57,7 +57,7 @@ service UserService {
   rpc updateUser(User) returns (User);
   rpc changeRoles(UserRole) returns (User);
   rpc changePassword(UserPassword) returns (User);
-  rpc deleteUser(UserId) returns (User);
+  rpc deleteUser(UserId) returns (EmptyUser);
   rpc changeTeam(UserTeamIds) returns (User);
   rpc changeSpecs(UserSpecsIds) returns (User);
 }

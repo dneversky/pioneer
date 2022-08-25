@@ -34,7 +34,7 @@ public class UserGrpcImpl implements UserGrpc {
 
     @Override
     public UserServiceOuterClass.User getUserById(long userId) {
-        return serviceBlockingStub.getUserById(UserServiceOuterClass.UserId.newBuilder().build());
+        return serviceBlockingStub.getUserById(UserServiceOuterClass.UserId.newBuilder().setId(userId).build());
     }
 
     @Override
@@ -47,10 +47,12 @@ public class UserGrpcImpl implements UserGrpc {
 
     @Override
     public UserServiceOuterClass.User updateUser(User user) {
+        String teamId = "";
+        if(user.getTeam() != null) teamId = user.getTeam().getId();
         return serviceBlockingStub.updateUser(UserServiceOuterClass.User.newBuilder()
                         .setId(user.getId())
                         .setNickname(user.getNickname())
-                        .setTeamId(user.getTeam().getId())
+                        .setTeamId(teamId)
                         .addAllSpecsIds(user.getSpecs().stream().map(Spec::getId).collect(Collectors.toSet())).build());
     }
 
@@ -67,7 +69,7 @@ public class UserGrpcImpl implements UserGrpc {
     }
 
     @Override
-    public UserServiceOuterClass.User deleteUser(long userId) {
+    public UserServiceOuterClass.EmptyUser deleteUser(long userId) {
         return serviceBlockingStub.deleteUser(UserServiceOuterClass.UserId.newBuilder().setId(userId).build());
     }
 

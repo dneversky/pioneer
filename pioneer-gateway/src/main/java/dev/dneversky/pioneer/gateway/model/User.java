@@ -3,6 +3,7 @@ package dev.dneversky.pioneer.gateway.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +14,8 @@ public class User {
 
     private long id;
     private String nickname;
+
+    @Nullable
     private Team team;
     private List<Spec> specs = new ArrayList<>();
 

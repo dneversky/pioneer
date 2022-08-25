@@ -82,8 +82,10 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void deleteUser(UserServiceOuterClass.UserId request, StreamObserver<UserServiceOuterClass.User> responseObserver) {
+    public void deleteUser(UserServiceOuterClass.UserId request, StreamObserver<UserServiceOuterClass.EmptyUser> responseObserver) {
         userService.deleteUser(request.getId());
+        UserServiceOuterClass.EmptyUser response = UserServiceOuterClass.EmptyUser.newBuilder().build();
+        responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 

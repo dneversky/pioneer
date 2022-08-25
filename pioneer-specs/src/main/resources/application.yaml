@@ -3,12 +3,12 @@ server:
 
 spring:
   application:
-    name: user-service
+    name: spec-service
   data:
     mongodb:
       authentication-database: admin
-      username:
-      password:
+      username: root
+      password: root
       database: pioneer-specs
       port: 27017
       host: localhost
