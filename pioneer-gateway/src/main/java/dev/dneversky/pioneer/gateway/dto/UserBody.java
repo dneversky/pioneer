@@ -1,4 +1,4 @@
-package dev.dneversky.pioneer.gateway.model;
+package dev.dneversky.pioneer.gateway.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class NewUser {
+public class UserBody {
 
     private String nickname;
     private String username;
@@ -17,8 +17,8 @@ public class NewUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NewUser newUser = (NewUser) o;
-        return Objects.equals(username, newUser.username);
+        UserBody userBody = (UserBody) o;
+        return Objects.equals(username, userBody.username);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package dev.dneversky.pioneer.gateway.api.v1;
 
-import dev.dneversky.pioneer.gateway.model.NewUser;
-import dev.dneversky.pioneer.gateway.model.PasswordToChange;
+import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
+import dev.dneversky.pioneer.gateway.dto.UserBody;
+import dev.dneversky.pioneer.gateway.dto.PasswordToChange;
 import dev.dneversky.pioneer.gateway.model.User;
 import dev.dneversky.pioneer.gateway.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody NewUser newUser) {
-        return userServiceImpl.createUser(newUser);
+    public User createUser(@RequestBody UserBody userBody) {
+        return userServiceImpl.createUser(userBody);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
+    public User updateUser(@RequestBody UpdateUserDto user) {
         return userServiceImpl.updateUser(user);
     }
 

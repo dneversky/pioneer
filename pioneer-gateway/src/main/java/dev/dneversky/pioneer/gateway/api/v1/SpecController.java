@@ -1,7 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.v1;
 
 import dev.dneversky.pioneer.gateway.model.Spec;
-import dev.dneversky.pioneer.gateway.model.SpecBody;
+import dev.dneversky.pioneer.gateway.dto.SpecBody;
 import dev.dneversky.pioneer.gateway.service.impl.SpecServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

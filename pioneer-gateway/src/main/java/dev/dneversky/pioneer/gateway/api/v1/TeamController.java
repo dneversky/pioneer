@@ -1,5 +1,6 @@
 package dev.dneversky.pioneer.gateway.api.v1;
 
+import dev.dneversky.pioneer.gateway.dto.TeamBody;
 import dev.dneversky.pioneer.gateway.model.*;
 import dev.dneversky.pioneer.gateway.service.impl.TeamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

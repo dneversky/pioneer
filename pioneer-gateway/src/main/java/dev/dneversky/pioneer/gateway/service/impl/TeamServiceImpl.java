@@ -1,9 +1,9 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
-import dev.dneversky.pioneer.gateway.api.grpc.impl.TeamGrpcImpl;
+import dev.dneversky.pioneer.gateway.api.grpc.TeamGrpcImpl;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.Team;
-import dev.dneversky.pioneer.gateway.model.TeamBody;
+import dev.dneversky.pioneer.gateway.dto.TeamBody;
 import dev.dneversky.pioneer.gateway.model.User;
 import dev.dneversky.pioneer.gateway.service.TeamService;
 import org.dneversky.gateway.TeamServiceOuterClass;

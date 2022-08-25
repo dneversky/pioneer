@@ -1,7 +1,7 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
-import dev.dneversky.pioneer.gateway.api.grpc.impl.SpecGrpcImpl;
-import dev.dneversky.pioneer.gateway.model.SpecBody;
+import dev.dneversky.pioneer.gateway.api.grpc.SpecGrpcImpl;
+import dev.dneversky.pioneer.gateway.dto.SpecBody;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.service.SpecService;
 import org.dneversky.gateway.SpecServiceOuterClass;

@@ -1,7 +1,7 @@
 package dev.dneversky.pioneer.gateway.service;
 
 import dev.dneversky.pioneer.gateway.model.Team;
-import dev.dneversky.pioneer.gateway.model.TeamBody;
+import dev.dneversky.pioneer.gateway.dto.TeamBody;
 
 import java.util.Collection;
 

@@ -1,6 +1,6 @@
 package dev.dneversky.pioneer.gateway.service;
 
-import dev.dneversky.pioneer.gateway.model.SpecBody;
+import dev.dneversky.pioneer.gateway.dto.SpecBody;
 import dev.dneversky.pioneer.gateway.model.Spec;
 
 import java.util.Collection;

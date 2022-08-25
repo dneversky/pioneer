@@ -1,7 +1,8 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
-import dev.dneversky.pioneer.gateway.api.grpc.impl.UserGrpcImpl;
-import dev.dneversky.pioneer.gateway.model.NewUser;
+import dev.dneversky.pioneer.gateway.api.grpc.UserGrpcImpl;
+import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
+import dev.dneversky.pioneer.gateway.dto.UserBody;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.User;
 import dev.dneversky.pioneer.gateway.service.UserService;
@@ -54,12 +55,12 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
-    public User createUser(NewUser newUser) {
-        return constructUserWithProtoUser(userGrpcImpl.createUser(newUser));
+    public User createUser(UserBody userBody) {
+        return constructUserWithProtoUser(userGrpcImpl.createUser(userBody));
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUser(UpdateUserDto user) {
         return constructUserWithProtoUser(userGrpcImpl.updateUser(user));
     }
 

@@ -1,4 +1,4 @@
-package dev.dneversky.pioneer.gateway.model;
+package dev.dneversky.pioneer.gateway.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
