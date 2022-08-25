@@ -7,6 +7,10 @@ message SpecsIds {
   repeated string ids = 1;
 }
 
+message SpecId {
+  string id = 1;
+}
+
 message Specs {
   repeated Spec specs = 1;
 }
@@ -17,7 +21,15 @@ message Spec {
   string description = 3;
 }
 
+message NewSpec {
+  string name = 2;
+  string description = 3;
+}
+
 service SpecService {
+  rpc getSpecs(EmptySpec) returns (Specs);
   rpc getSpecsByIds(SpecsIds) returns (Specs);
-  rpc createSpec(Spec) returns (Spec);
+  rpc createSpec(NewSpec) returns (Spec);
+  rpc updateSpec(Spec) returns (Spec);
+  rpc deleteSpec(SpecId) returns (EmptySpec);
 }

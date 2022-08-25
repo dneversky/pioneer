@@ -7,9 +7,8 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class Spec {
+public class SpecBody {
 
-    private String id;
     private String name;
     private String description;
 
@@ -17,20 +16,19 @@ public class Spec {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Spec spec = (Spec) o;
-        return Objects.equals(id, spec.id) && Objects.equals(name, spec.name);
+        SpecBody specBody = (SpecBody) o;
+        return Objects.equals(name, specBody.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
-        return "Spec{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+        return "NewSpec{" +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
