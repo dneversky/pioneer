@@ -8,7 +8,6 @@ import dev.dneversky.pioneer.gateway.service.impl.TeamServiceImpl;
 import dev.dneversky.pioneer.gateway.service.impl.UserServiceImpl;
 import org.dneversky.gateway.TeamServiceOuterClass;
 import org.dneversky.gateway.UserServiceOuterClass;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +15,19 @@ import java.util.List;
 @Service
 public class RelationService {
 
-    private final UserServiceImpl userService;
-    private final TeamServiceImpl teamService;
-    private final SpecServiceImpl specService;
+    private UserServiceImpl userService;
+    private TeamServiceImpl teamService;
+    private SpecServiceImpl specService;
 
-    @Autowired
-    public RelationService(UserServiceImpl userService, TeamServiceImpl teamService, SpecServiceImpl specService) {
+    public void setUserService(UserServiceImpl userService) {
         this.userService = userService;
+    }
+
+    public void setTeamService(TeamServiceImpl teamService) {
         this.teamService = teamService;
+    }
+
+    public void setSpecService(SpecServiceImpl specService) {
         this.specService = specService;
     }
 
