@@ -9,7 +9,7 @@ spring:
       authentication-database: admin
       username: root
       password: root
-      database: team-specs
+      database: teams
       port: 27017
       host: localhost
       auto-index-creation: true

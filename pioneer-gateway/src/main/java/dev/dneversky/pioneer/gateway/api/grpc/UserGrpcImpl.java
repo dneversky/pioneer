@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserGrpcImpl {
@@ -43,7 +44,7 @@ public class UserGrpcImpl {
         return serviceBlockingStub.updateUser(UserServiceOuterClass.User.newBuilder()
                         .setId(user.getId())
                         .setNickname(user.getNickname())
-                        .setTeamId(user.getTeamId())
+                        .setTeamId(Optional.ofNullable(user.getTeamId()).orElse(""))
                         .addAllSpecsIds(user.getSpecsId()).build());
     }
 

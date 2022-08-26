@@ -71,10 +71,10 @@ public class TeamServiceImpl implements TeamService {
     }
 
     private Team constructTeamWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
-        Team team = new Team();
-        team.setMembers(getUsersWithProtoTeam(protoTeam));
-        team.setSpecs(getSpecsWithProtoTeam(protoTeam));
-        return team;
+        String teamId = protoTeam.getId();
+        List<User> members = getUsersWithProtoTeam(protoTeam);
+        List<Spec> specs = getSpecsWithProtoTeam(protoTeam);
+        return new Team(teamId, members, specs);
     }
 
     private List<Team> constructTeamsWithProtoTeams(List<TeamServiceOuterClass.Team> protoTeams) {

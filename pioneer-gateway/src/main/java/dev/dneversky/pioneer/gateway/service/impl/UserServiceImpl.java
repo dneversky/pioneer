@@ -45,12 +45,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = new ArrayList<>();
         List<UserServiceOuterClass.User> protoUsers = userGrpcImpl.getProtoUsersByIds(ids);
         for(UserServiceOuterClass.User protoUser : protoUsers) {
-            User user = new User();
-            user.setId(protoUser.getId());
-            user.setNickname(protoUser.getNickname());
-            user.setSpecs(getSpecsWithProtoUser(protoUser));
             users.add(constructUserWithProtoUser(protoUser));
-            users.add(user);
         }
         return users;
     }
@@ -90,12 +85,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private User constructUserWithProtoUser(UserServiceOuterClass.User protoUser) {
-        User user = new User();
-        user.setId(protoUser.getId());
-        user.setNickname(protoUser.getNickname());
-        user.setSpecs(getSpecsWithProtoUser(protoUser));
-        user.setTeam(null);
-        return user;
+        long id = protoUser.getId();
+        String nickname = protoUser.getNickname();
+        List<Spec> specs = getSpecsWithProtoUser(protoUser);
+        return new User(id, nickname, null, specs);
     }
 
     private List<Spec> getSpecsWithProtoUser(UserServiceOuterClass.User protoUser) {
