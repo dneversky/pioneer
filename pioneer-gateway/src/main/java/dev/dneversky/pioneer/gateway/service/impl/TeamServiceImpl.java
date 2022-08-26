@@ -81,6 +81,7 @@ public class TeamServiceImpl implements TeamService {
         List<Team> teams = new ArrayList<>();
         for(TeamServiceOuterClass.Team protoTeam : protoTeams) {
             Team team = new Team();
+            team.setId(protoTeam.getId());
             team.setSpecs(getSpecsWithProtoTeam(protoTeam));
             team.setMembers(getUsersWithProtoTeam(protoTeam));
             teams.add(team);
