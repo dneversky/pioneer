@@ -4,6 +4,7 @@ import dev.dneversky.pioneer.gateway.api.grpc.UserGrpcImpl;
 import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
 import dev.dneversky.pioneer.gateway.dto.UserBody;
 import dev.dneversky.pioneer.gateway.model.Spec;
+import dev.dneversky.pioneer.gateway.model.Team;
 import dev.dneversky.pioneer.gateway.model.User;
 import dev.dneversky.pioneer.gateway.service.UserService;
 import org.dneversky.gateway.UserServiceOuterClass;
@@ -19,11 +20,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserGrpcImpl userGrpcImpl;
     private final SpecServiceImpl specServiceImpl;
+    private final TeamServiceImpl teamService;
 
     @Autowired
-    public UserServiceImpl(UserGrpcImpl userGrpcImpl, SpecServiceImpl specServiceImpl) {
+    public UserServiceImpl(UserGrpcImpl userGrpcImpl, SpecServiceImpl specServiceImpl, TeamServiceImpl teamService) {
         this.userGrpcImpl = userGrpcImpl;
         this.specServiceImpl = specServiceImpl;
+        this.teamService = teamService;
     }
 
     @Override
@@ -87,11 +90,16 @@ public class UserServiceImpl implements UserService {
     private User constructUserWithProtoUser(UserServiceOuterClass.User protoUser) {
         long id = protoUser.getId();
         String nickname = protoUser.getNickname();
+        Team team = getTeamWithProtoUser(protoUser);
         List<Spec> specs = getSpecsWithProtoUser(protoUser);
-        return new User(id, nickname, null, specs);
+        return new User(id, nickname, team, specs);
     }
 
     private List<Spec> getSpecsWithProtoUser(UserServiceOuterClass.User protoUser) {
         return specServiceImpl.getSpecsByIds(protoUser.getSpecsIdsList());
+    }
+
+    private Team getTeamWithProtoUser(UserServiceOuterClass.User protoUser) {
+        return teamService.getTeamById(protoUser.getTeamId());
     }
 }

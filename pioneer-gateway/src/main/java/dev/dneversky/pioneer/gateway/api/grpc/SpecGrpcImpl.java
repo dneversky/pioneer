@@ -1,5 +1,6 @@
 package dev.dneversky.pioneer.gateway.api.grpc;
 
+import dev.dneversky.pioneer.gateway.dto.UpdateSpecDto;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.dto.SpecBody;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -33,7 +34,7 @@ public class SpecGrpcImpl {
         return response.getSpecsList();
     }
 
-    public SpecServiceOuterClass.Spec updateSpec(Spec spec) {
+    public SpecServiceOuterClass.Spec updateSpec(UpdateSpecDto spec) {
         return serviceBlockingStub.updateSpec(SpecServiceOuterClass.Spec.newBuilder()
                 .setId(spec.getId())
                 .setName(spec.getName())

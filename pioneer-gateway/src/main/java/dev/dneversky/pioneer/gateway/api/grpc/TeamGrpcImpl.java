@@ -1,9 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.grpc;
 
-import dev.dneversky.pioneer.gateway.model.Spec;
-import dev.dneversky.pioneer.gateway.model.Team;
 import dev.dneversky.pioneer.gateway.dto.TeamBody;
-import dev.dneversky.pioneer.gateway.model.User;
+import dev.dneversky.pioneer.gateway.dto.UpdateTeamDto;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.dneversky.gateway.TeamServiceGrpc;
 import org.dneversky.gateway.TeamServiceOuterClass;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class TeamGrpcImpl {
@@ -34,10 +31,11 @@ public class TeamGrpcImpl {
                         .addAllSpecsIds(teamBody.getSpecsIds()).build());
     }
 
-    public TeamServiceOuterClass.Team updateTeam(Team team) {
+    public TeamServiceOuterClass.Team updateTeam(UpdateTeamDto team) {
         return blockingStub.updateTeam(TeamServiceOuterClass.Team.newBuilder()
-                .addAllMembersIds(team.getMembers().stream().map(User::getId).collect(Collectors.toList()))
-                .addAllSpecsIds(team.getSpecs().stream().map(Spec::getId).collect(Collectors.toList())).build());
+                        .setId(team.getId())
+                        .addAllMembersIds(team.getMembersIds())
+                        .addAllSpecsIds(team.getSpecsIds()).build());
     }
 
     public void deleteTeam(String teamId) {

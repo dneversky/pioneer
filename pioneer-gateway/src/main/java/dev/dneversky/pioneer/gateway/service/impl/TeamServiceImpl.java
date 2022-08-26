@@ -1,6 +1,7 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
 import dev.dneversky.pioneer.gateway.api.grpc.TeamGrpcImpl;
+import dev.dneversky.pioneer.gateway.dto.UpdateTeamDto;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.model.Team;
 import dev.dneversky.pioneer.gateway.dto.TeamBody;
@@ -43,7 +44,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team updateTeam(Team team) {
+    public Team updateTeam(UpdateTeamDto team) {
         return constructTeamWithProtoTeam(teamGrpcImpl.updateTeam(team));
     }
 
