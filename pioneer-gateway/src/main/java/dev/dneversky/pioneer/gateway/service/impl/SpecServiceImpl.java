@@ -25,12 +25,17 @@ public class SpecServiceImpl implements SpecService {
 
     @Override
     public List<Spec> getSpecs() {
-        return specGrpcImpl.getSpecs().stream().map(this::constructSpecWithProtoSpec).collect(Collectors.toList());
+        return specGrpcImpl.getSpecs().stream()
+                .map(this::constructSpecWithProtoSpec)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Spec> getSpecsByIds(Collection<String> ids) {
-        return specGrpcImpl.getSpecsByIds(ids).stream().map(this::constructSpecWithProtoSpec).collect(Collectors.toList());
+        return specGrpcImpl.getSpecsByIds(ids)
+                .stream()
+                .map(this::constructSpecWithProtoSpec)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -49,10 +54,10 @@ public class SpecServiceImpl implements SpecService {
     }
 
     private Spec constructSpecWithProtoSpec(SpecServiceOuterClass.Spec protoSpec) {
-        Spec spec = new Spec();
-        spec.setId(protoSpec.getId());
-        spec.setName(protoSpec.getName());
-        spec.setDescription(protoSpec.getDescription());
-        return spec;
+        return Spec.builder()
+                .id(protoSpec.getId())
+                .name(protoSpec.getName())
+                .description(protoSpec.getDescription())
+                .build();
     }
 }

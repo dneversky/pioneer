@@ -3,9 +3,8 @@ package dev.dneversky.pioneer.gateway.service.impl;
 import dev.dneversky.pioneer.gateway.api.grpc.UserGrpcImpl;
 import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
 import dev.dneversky.pioneer.gateway.dto.UserBody;
-import dev.dneversky.pioneer.gateway.model.Spec;
-import dev.dneversky.pioneer.gateway.model.Team;
 import dev.dneversky.pioneer.gateway.model.User;
+import dev.dneversky.pioneer.gateway.service.RelationService;
 import dev.dneversky.pioneer.gateway.service.UserService;
 import org.dneversky.gateway.UserServiceOuterClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +18,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserGrpcImpl userGrpcImpl;
-    private final SpecServiceImpl specServiceImpl;
-    private final TeamServiceImpl teamService;
+    private final RelationService relationService;
 
     @Autowired
-    public UserServiceImpl(UserGrpcImpl userGrpcImpl, SpecServiceImpl specServiceImpl, TeamServiceImpl teamService) {
+    public UserServiceImpl(UserGrpcImpl userGrpcImpl, RelationService relationService) {
         this.userGrpcImpl = userGrpcImpl;
-        this.specServiceImpl = specServiceImpl;
-        this.teamService = teamService;
+        this.relationService = relationService;
     }
 
     @Override
@@ -34,42 +31,42 @@ public class UserServiceImpl implements UserService {
         List<User> users = new ArrayList<>();
         List<UserServiceOuterClass.User> protoUsers = (List<UserServiceOuterClass.User>) userGrpcImpl.getUsers();
         for(UserServiceOuterClass.User protoUser : protoUsers) {
-            users.add(constructUserWithProtoUser(protoUser));
+            users.add(constructUserFromProtoUser(protoUser));
         }
         return users;
     }
 
     @Override
     public User getUserById(long userId) {
-        return constructUserWithProtoUser(userGrpcImpl.getUserById(userId));
+        return constructUserFromProtoUser(userGrpcImpl.getUserById(userId));
     }
 
     public List<User> getUsersByIds(Collection<Long> ids) {
         List<User> users = new ArrayList<>();
         List<UserServiceOuterClass.User> protoUsers = userGrpcImpl.getProtoUsersByIds(ids);
         for(UserServiceOuterClass.User protoUser : protoUsers) {
-            users.add(constructUserWithProtoUser(protoUser));
+            users.add(constructUserFromProtoUser(protoUser));
         }
         return users;
     }
 
     public User createUser(UserBody userBody) {
-        return constructUserWithProtoUser(userGrpcImpl.createUser(userBody));
+        return constructUserFromProtoUser(userGrpcImpl.createUser(userBody));
     }
 
     @Override
     public User updateUser(UpdateUserDto user) {
-        return constructUserWithProtoUser(userGrpcImpl.updateUser(user));
+        return constructUserFromProtoUser(userGrpcImpl.updateUser(user));
     }
 
     @Override
     public User changeRoles(long userId, Collection<String> roleNames) {
-        return constructUserWithProtoUser(userGrpcImpl.changeRoles(userId, roleNames));
+        return constructUserFromProtoUser(userGrpcImpl.changeRoles(userId, roleNames));
     }
 
     @Override
     public User changePassword(long userId, String oldPassword, String newPassword) {
-        return constructUserWithProtoUser(userGrpcImpl.changePassword(userId, oldPassword, newPassword));
+        return constructUserFromProtoUser(userGrpcImpl.changePassword(userId, oldPassword, newPassword));
     }
 
     @Override
@@ -79,27 +76,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User changeTeam(long userId, String teamId) {
-        return constructUserWithProtoUser(userGrpcImpl.changeTeam(userId, teamId));
+        return constructUserFromProtoUser(userGrpcImpl.changeTeam(userId, teamId));
     }
 
     @Override
     public User changeSpecs(long userId, Collection<String> specsIds) {
-        return constructUserWithProtoUser(userGrpcImpl.changeSpecs(userId, specsIds));
+        return constructUserFromProtoUser(userGrpcImpl.changeSpecs(userId, specsIds));
     }
 
-    private User constructUserWithProtoUser(UserServiceOuterClass.User protoUser) {
-        long id = protoUser.getId();
-        String nickname = protoUser.getNickname();
-        Team team = getTeamWithProtoUser(protoUser);
-        List<Spec> specs = getSpecsWithProtoUser(protoUser);
-        return new User(id, nickname, team, specs);
-    }
-
-    private List<Spec> getSpecsWithProtoUser(UserServiceOuterClass.User protoUser) {
-        return specServiceImpl.getSpecsByIds(protoUser.getSpecsIdsList());
-    }
-
-    private Team getTeamWithProtoUser(UserServiceOuterClass.User protoUser) {
-        return teamService.getTeamById(protoUser.getTeamId());
+    private User constructUserFromProtoUser(UserServiceOuterClass.User protoUser) {
+        return User.builder()
+                .id(protoUser.getId())
+                .nickname(protoUser.getNickname())
+                .team(relationService.getTeamFromProtoUser(protoUser))
+                .specs(relationService.getSpecsFromProtoUser(protoUser))
+                .build();
     }
 }
