@@ -1,7 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.grpc;
 
-import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
-import dev.dneversky.pioneer.gateway.dto.UserBody;
+import dev.dneversky.pioneer.gateway.dto.UserToCreateDto;
+import dev.dneversky.pioneer.gateway.model.User;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.dneversky.gateway.UserServiceGrpc;
 import org.dneversky.gateway.UserServiceOuterClass;
@@ -33,14 +33,14 @@ public class UserGrpcImpl {
         return serviceBlockingStub.getUserById(UserServiceOuterClass.UserId.newBuilder().setId(userId).build());
     }
 
-    public UserServiceOuterClass.User createUser(UserBody userBody) {
+    public UserServiceOuterClass.User createUser(UserToCreateDto userToCreateDto) {
         return serviceBlockingStub.createUser(UserServiceOuterClass.NewUser.newBuilder()
-                        .setNickname(userBody.getNickname())
-                        .setUsername(userBody.getUsername())
-                        .setPassword(userBody.getPassword()).build());
+                        .setNickname(userToCreateDto.getNickname())
+                        .setUsername(userToCreateDto.getUsername())
+                        .setPassword(userToCreateDto.getPassword()).build());
     }
 
-    public UserServiceOuterClass.User updateUser(UpdateUserDto user) {
+    public UserServiceOuterClass.User updateUser(User user) {
         return serviceBlockingStub.updateUser(UserServiceOuterClass.User.newBuilder()
                         .setId(user.getId())
                         .setNickname(user.getNickname())

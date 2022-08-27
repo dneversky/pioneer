@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class SpecBody {
+public class SpecToCreateDto {
 
     private String name;
     private String description;
@@ -16,20 +16,12 @@ public class SpecBody {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SpecBody specBody = (SpecBody) o;
-        return Objects.equals(name, specBody.name);
+        SpecToCreateDto specToCreateDto = (SpecToCreateDto) o;
+        return Objects.equals(name, specToCreateDto.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name);
-    }
-
-    @Override
-    public String toString() {
-        return "NewSpec{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 }

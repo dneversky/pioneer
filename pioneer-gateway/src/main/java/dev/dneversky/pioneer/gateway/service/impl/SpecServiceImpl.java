@@ -1,8 +1,7 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
 import dev.dneversky.pioneer.gateway.api.grpc.SpecGrpcImpl;
-import dev.dneversky.pioneer.gateway.dto.SpecBody;
-import dev.dneversky.pioneer.gateway.dto.UpdateSpecDto;
+import dev.dneversky.pioneer.gateway.dto.SpecToCreateDto;
 import dev.dneversky.pioneer.gateway.model.Spec;
 import dev.dneversky.pioneer.gateway.service.SpecService;
 import org.dneversky.gateway.SpecServiceOuterClass;
@@ -39,12 +38,12 @@ public class SpecServiceImpl implements SpecService {
     }
 
     @Override
-    public Spec createSpec(SpecBody specBody) {
-        return constructSpecWithProtoSpec(specGrpcImpl.createSpec(specBody));
+    public Spec createSpec(SpecToCreateDto specToCreateDto) {
+        return constructSpecWithProtoSpec(specGrpcImpl.createSpec(specToCreateDto));
     }
 
     @Override
-    public Spec updateSpec(UpdateSpecDto spec) {
+    public Spec updateSpec(Spec spec) {
         return constructSpecWithProtoSpec(specGrpcImpl.updateSpec(spec));
     }
 

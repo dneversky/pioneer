@@ -1,13 +1,10 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
 import dev.dneversky.pioneer.gateway.api.grpc.UserGrpcImpl;
-import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
-import dev.dneversky.pioneer.gateway.dto.UserBody;
+import dev.dneversky.pioneer.gateway.dto.UserToCreateDto;
 import dev.dneversky.pioneer.gateway.model.User;
-import dev.dneversky.pioneer.gateway.service.RelationService;
 import dev.dneversky.pioneer.gateway.service.UserService;
 import org.dneversky.gateway.UserServiceOuterClass;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,12 +15,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserGrpcImpl userGrpcImpl;
-    private final RelationService relationService;
 
-    @Autowired
-    public UserServiceImpl(UserGrpcImpl userGrpcImpl, RelationService relationService) {
+    public UserServiceImpl(UserGrpcImpl userGrpcImpl) {
         this.userGrpcImpl = userGrpcImpl;
-        this.relationService = relationService;
     }
 
     @Override
@@ -50,12 +44,12 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
-    public User createUser(UserBody userBody) {
-        return constructUserFromProtoUser(userGrpcImpl.createUser(userBody));
+    public User createUser(UserToCreateDto userToCreateDto) {
+        return constructUserFromProtoUser(userGrpcImpl.createUser(userToCreateDto));
     }
 
     @Override
-    public User updateUser(UpdateUserDto user) {
+    public User updateUser(User user) {
         return constructUserFromProtoUser(userGrpcImpl.updateUser(user));
     }
 
@@ -88,8 +82,8 @@ public class UserServiceImpl implements UserService {
         return User.builder()
                 .id(protoUser.getId())
                 .nickname(protoUser.getNickname())
-                .team(relationService.getTeamFromProtoUser(protoUser))
-                .specs(relationService.getSpecsFromProtoUser(protoUser))
+                .teamId(protoUser.getTeamId())
+                .specsId(protoUser.getSpecsIdsList())
                 .build();
     }
 }

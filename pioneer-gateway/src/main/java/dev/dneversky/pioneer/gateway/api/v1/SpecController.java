@@ -1,8 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.v1;
 
-import dev.dneversky.pioneer.gateway.dto.UpdateSpecDto;
+import dev.dneversky.pioneer.gateway.dto.SpecToCreateDto;
 import dev.dneversky.pioneer.gateway.model.Spec;
-import dev.dneversky.pioneer.gateway.dto.SpecBody;
 import dev.dneversky.pioneer.gateway.service.impl.SpecServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,12 +27,12 @@ public class SpecController {
     }
 
     @PostMapping
-    public ResponseEntity<Spec> createSpec(@RequestBody SpecBody specBody) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(specService.createSpec(specBody));
+    public ResponseEntity<Spec> createSpec(@RequestBody SpecToCreateDto specToCreateDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(specService.createSpec(specToCreateDto));
     }
 
     @PutMapping
-    public ResponseEntity<Spec> updateSpec(@RequestBody UpdateSpecDto spec) {
+    public ResponseEntity<Spec> updateSpec(@RequestBody Spec spec) {
         return ResponseEntity.ok(specService.updateSpec(spec));
     }
 

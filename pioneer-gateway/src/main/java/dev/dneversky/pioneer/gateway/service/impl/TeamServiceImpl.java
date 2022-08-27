@@ -1,10 +1,8 @@
 package dev.dneversky.pioneer.gateway.service.impl;
 
 import dev.dneversky.pioneer.gateway.api.grpc.TeamGrpcImpl;
-import dev.dneversky.pioneer.gateway.dto.TeamBody;
-import dev.dneversky.pioneer.gateway.dto.UpdateTeamDto;
+import dev.dneversky.pioneer.gateway.dto.TeamToCreateDto;
 import dev.dneversky.pioneer.gateway.model.Team;
-import dev.dneversky.pioneer.gateway.service.RelationService;
 import dev.dneversky.pioneer.gateway.service.TeamService;
 import org.dneversky.gateway.TeamServiceOuterClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,10 @@ import java.util.stream.Collectors;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamGrpcImpl teamGrpcImpl;
-    private final RelationService relationService;
 
     @Autowired
-    public TeamServiceImpl(TeamGrpcImpl teamGrpcImpl, RelationService relationService) {
+    public TeamServiceImpl(TeamGrpcImpl teamGrpcImpl) {
         this.teamGrpcImpl = teamGrpcImpl;
-        this.relationService = relationService;
     }
 
     public List<Team> getTeams() {
@@ -38,12 +34,12 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team createTeam(TeamBody teamBody) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.createTeam(teamBody));
+    public Team createTeam(TeamToCreateDto teamToCreateDto) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.createTeam(teamToCreateDto));
     }
 
     @Override
-    public Team updateTeam(UpdateTeamDto team) {
+    public Team updateTeam(Team team) {
         return constructTeamWithProtoTeam(teamGrpcImpl.updateTeam(team));
     }
 
@@ -65,8 +61,8 @@ public class TeamServiceImpl implements TeamService {
     private Team constructTeamWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {
         return Team.builder()
                 .id(protoTeam.getId())
-                .members(relationService.getUsersFromProtoTeam(protoTeam))
-                .specs(relationService.getSpecsFromProtoTeam(protoTeam))
+                .membersId(protoTeam.getMembersIdsList())
+                .specsId(protoTeam.getSpecsIdsList())
                 .build();
     }
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class TeamBody {
+public class TeamToCreateDto {
 
     private Set<Long> membersIds = new HashSet<>();
     private Set<String> specsIds = new HashSet<>();
@@ -18,20 +18,12 @@ public class TeamBody {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TeamBody teamBody = (TeamBody) o;
-        return Objects.equals(membersIds, teamBody.membersIds) && Objects.equals(specsIds, teamBody.specsIds);
+        TeamToCreateDto teamToCreateDto = (TeamToCreateDto) o;
+        return Objects.equals(membersIds, teamToCreateDto.membersIds) && Objects.equals(specsIds, teamToCreateDto.specsIds);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(membersIds, specsIds);
-    }
-
-    @Override
-    public String toString() {
-        return "TeamBody{" +
-                "membersIds=" + membersIds +
-                ", specsIds=" + specsIds +
-                '}';
     }
 }

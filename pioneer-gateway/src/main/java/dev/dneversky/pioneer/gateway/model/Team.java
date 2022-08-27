@@ -16,8 +16,8 @@ import java.util.Objects;
 public class Team {
 
     private String id;
-    private List<User> members = new ArrayList<>();
-    private List<Spec> specs = new ArrayList<>();
+    private List<Long> membersId = new ArrayList<>();
+    private List<String> specsId = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -36,8 +36,8 @@ public class Team {
     public String toString() {
         return "Team{" +
                 "id='" + id + '\'' +
-                ", members=" + members +
-                ", specs=" + specs +
+                ", members=" + membersId +
+                ", specs=" + specsId +
                 '}';
     }
 }

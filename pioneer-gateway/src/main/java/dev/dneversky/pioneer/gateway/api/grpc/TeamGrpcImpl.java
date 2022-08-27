@@ -1,7 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.grpc;
 
-import dev.dneversky.pioneer.gateway.dto.TeamBody;
-import dev.dneversky.pioneer.gateway.dto.UpdateTeamDto;
+import dev.dneversky.pioneer.gateway.dto.TeamToCreateDto;
+import dev.dneversky.pioneer.gateway.model.Team;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.dneversky.gateway.TeamServiceGrpc;
 import org.dneversky.gateway.TeamServiceOuterClass;
@@ -25,17 +25,17 @@ public class TeamGrpcImpl {
         return blockingStub.getTeamById(TeamServiceOuterClass.TeamId.newBuilder().setId(teamId).build());
     }
 
-    public TeamServiceOuterClass.Team createTeam(TeamBody teamBody) {
+    public TeamServiceOuterClass.Team createTeam(TeamToCreateDto teamToCreateDto) {
         return blockingStub.createTeam(TeamServiceOuterClass.TeamBody.newBuilder()
-                        .addAllMembersIds(teamBody.getMembersIds())
-                        .addAllSpecsIds(teamBody.getSpecsIds()).build());
+                        .addAllMembersIds(teamToCreateDto.getMembersIds())
+                        .addAllSpecsIds(teamToCreateDto.getSpecsIds()).build());
     }
 
-    public TeamServiceOuterClass.Team updateTeam(UpdateTeamDto team) {
+    public TeamServiceOuterClass.Team updateTeam(Team team) {
         return blockingStub.updateTeam(TeamServiceOuterClass.Team.newBuilder()
                         .setId(team.getId())
-                        .addAllMembersIds(team.getMembersIds())
-                        .addAllSpecsIds(team.getSpecsIds()).build());
+                        .addAllMembersIds(team.getMembersId())
+                        .addAllSpecsIds(team.getSpecsId()).build());
     }
 
     public void deleteTeam(String teamId) {

@@ -1,8 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.v1;
 
-import dev.dneversky.pioneer.gateway.dto.TeamBody;
-import dev.dneversky.pioneer.gateway.dto.UpdateTeamDto;
-import dev.dneversky.pioneer.gateway.model.*;
+import dev.dneversky.pioneer.gateway.dto.TeamToCreateDto;
+import dev.dneversky.pioneer.gateway.model.Team;
 import dev.dneversky.pioneer.gateway.service.impl.TeamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +32,12 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody TeamBody teamBody) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(teamService.createTeam(teamBody));
+    public ResponseEntity<Team> createTeam(@RequestBody TeamToCreateDto teamToCreateDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamService.createTeam(teamToCreateDto));
     }
 
     @PutMapping
-    public ResponseEntity<Team> updateTeam(@RequestBody UpdateTeamDto team) {
+    public ResponseEntity<Team> updateTeam(@RequestBody Team team) {
         return ResponseEntity.ok(teamService.updateTeam(team));
     }
 

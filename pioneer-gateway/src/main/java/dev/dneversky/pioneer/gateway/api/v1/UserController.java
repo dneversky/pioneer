@@ -1,8 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.v1;
 
-import dev.dneversky.pioneer.gateway.dto.UpdateUserDto;
-import dev.dneversky.pioneer.gateway.dto.UserBody;
-import dev.dneversky.pioneer.gateway.dto.PasswordToChange;
+import dev.dneversky.pioneer.gateway.dto.PasswordToChangeDto;
+import dev.dneversky.pioneer.gateway.dto.UserToCreateDto;
 import dev.dneversky.pioneer.gateway.model.User;
 import dev.dneversky.pioneer.gateway.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +32,18 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody UserBody userBody) {
-        return userServiceImpl.createUser(userBody);
+    public User createUser(@RequestBody UserToCreateDto userToCreateDto) {
+        return userServiceImpl.createUser(userToCreateDto);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody UpdateUserDto user) {
+    public User updateUser(@RequestBody User user) {
         return userServiceImpl.updateUser(user);
     }
 
     @PatchMapping("/{userId}/password")
-    public User patchPassword(@PathVariable long userId, @RequestBody PasswordToChange passwordToChange) {
-        return userServiceImpl.changePassword(userId, passwordToChange.getOldPassword(), passwordToChange.getNewPassword());
+    public User patchPassword(@PathVariable long userId, @RequestBody PasswordToChangeDto passwordToChangeDto) {
+        return userServiceImpl.changePassword(userId, passwordToChangeDto.getOldPassword(), passwordToChangeDto.getNewPassword());
     }
 
     @PatchMapping("/{userId}/roles")

@@ -20,8 +20,8 @@ public class User {
     private String nickname;
 
     @Nullable
-    private Team team;
-    private List<Spec> specs = new ArrayList<>();
+    private String teamId;
+    private List<String> specsId = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -41,8 +41,8 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", nickname='" + nickname + '\'' +
-                ", team=" + team +
-                ", specs=" + specs +
+                ", team=" + teamId +
+                ", specs=" + specsId +
                 '}';
     }
 }

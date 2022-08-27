@@ -1,8 +1,7 @@
 package dev.dneversky.pioneer.gateway.api.grpc;
 
-import dev.dneversky.pioneer.gateway.dto.UpdateSpecDto;
+import dev.dneversky.pioneer.gateway.dto.SpecToCreateDto;
 import dev.dneversky.pioneer.gateway.model.Spec;
-import dev.dneversky.pioneer.gateway.dto.SpecBody;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.dneversky.gateway.SpecServiceGrpc;
 import org.dneversky.gateway.SpecServiceOuterClass;
@@ -16,10 +15,10 @@ public class SpecGrpcImpl {
     @GrpcClient("spec-service")
     private SpecServiceGrpc.SpecServiceBlockingStub serviceBlockingStub;
 
-    public SpecServiceOuterClass.Spec createSpec(SpecBody specBody) {
+    public SpecServiceOuterClass.Spec createSpec(SpecToCreateDto specToCreateDto) {
         return serviceBlockingStub.createSpec(SpecServiceOuterClass.NewSpec.newBuilder()
-                        .setName(specBody.getName())
-                        .setDescription(specBody.getDescription()).build());
+                        .setName(specToCreateDto.getName())
+                        .setDescription(specToCreateDto.getDescription()).build());
     }
 
     public Collection<SpecServiceOuterClass.Spec> getSpecs() {
@@ -34,7 +33,7 @@ public class SpecGrpcImpl {
         return response.getSpecsList();
     }
 
-    public SpecServiceOuterClass.Spec updateSpec(UpdateSpecDto spec) {
+    public SpecServiceOuterClass.Spec updateSpec(Spec spec) {
         return serviceBlockingStub.updateSpec(SpecServiceOuterClass.Spec.newBuilder()
                 .setId(spec.getId())
                 .setName(spec.getName())
