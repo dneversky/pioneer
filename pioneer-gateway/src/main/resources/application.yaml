@@ -1,13 +1,11 @@
 server:
-  port: 0
+  port: 8080
 
 spring:
   application:
-    name: api-gateway
+    name: gateway-service
 
 grpc:
-  server:
-    port: 0
   client:
     GLOBAL:
       negotiationType: plaintext
