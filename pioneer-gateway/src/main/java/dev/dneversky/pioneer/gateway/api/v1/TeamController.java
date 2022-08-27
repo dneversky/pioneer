@@ -49,11 +49,11 @@ public class TeamController {
 
     @PatchMapping("/{teamId}/specs")
     public ResponseEntity<Team> changeSpecs(@PathVariable String teamId, @RequestParam List<String> specsIds) {
-        return ResponseEntity.ok(teamService.changeSpecs(specsIds));
+        return ResponseEntity.ok(teamService.changeSpecs(teamId, specsIds));
     }
 
     @PatchMapping("/{teamId}/members")
     public ResponseEntity<Team> changeMembers(@PathVariable String teamId, @RequestParam List<Long> membersIds) {
-        return ResponseEntity.ok(teamService.changeMembers(membersIds));
+        return ResponseEntity.ok(teamService.changeMembers(teamId, membersIds));
     }
 }

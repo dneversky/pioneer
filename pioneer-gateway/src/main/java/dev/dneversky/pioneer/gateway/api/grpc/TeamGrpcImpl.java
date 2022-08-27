@@ -42,11 +42,17 @@ public class TeamGrpcImpl {
         blockingStub.deleteTeam(TeamServiceOuterClass.TeamId.newBuilder().setId(teamId).build());
     }
 
-    public TeamServiceOuterClass.Team changeSpecs(Collection<String> specsIds) {
-        return blockingStub.changeSpecs(TeamServiceOuterClass.TeamSpecs.newBuilder().addAllSpecsIds(specsIds).build());
+    public TeamServiceOuterClass.Team changeSpecs(String teamId, Collection<String> specsIds) {
+        return blockingStub.changeSpecs(TeamServiceOuterClass.TeamSpecs.newBuilder()
+                .setTeamId(teamId)
+                .addAllSpecsIds(specsIds)
+                .build());
     }
 
-    public TeamServiceOuterClass.Team changeMembers(Collection<Long> membersIds) {
-        return blockingStub.changeMembers(TeamServiceOuterClass.TeamMembers.newBuilder().addAllMembersIds(membersIds).build());
+    public TeamServiceOuterClass.Team changeMembers(String teamId, Collection<Long> membersIds) {
+        return blockingStub.changeMembers(TeamServiceOuterClass.TeamMembers.newBuilder()
+                .setTeamId(teamId)
+                .addAllMembersIds(membersIds)
+                .build());
     }
 }

@@ -49,13 +49,13 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team changeSpecs(Collection<String> specsIds) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.changeSpecs(specsIds));
+    public Team changeSpecs(String teamId, Collection<String> specsIds) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.changeSpecs(teamId, specsIds));
     }
 
     @Override
-    public Team changeMembers(Collection<Long> membersIds) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.changeMembers(membersIds));
+    public Team changeMembers(String teamId, Collection<Long> membersIds) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.changeMembers(teamId, membersIds));
     }
 
     private Team constructTeamWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {

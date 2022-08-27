@@ -11,6 +11,6 @@ public interface TeamService {
     Team createTeam(TeamToCreateDto teamToCreateDto);
     Team updateTeam(Team team);
     void deleteTeam(String teamId);
-    Team changeSpecs(Collection<String> specsIds);
-    Team changeMembers(Collection<Long> membersIds);
+    Team changeSpecs(String teamId, Collection<String> specsIds);
+    Team changeMembers(String teamId, Collection<Long> membersIds);
 }
