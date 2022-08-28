@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Data
@@ -13,8 +16,14 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Spec {
 
+    @NotBlank(message = "Id must not be null.")
     private String id;
+
+    @NotNull(message = "Name must not be null.")
+    @Size(min = 2, max = 16, message = "Name must be between 2 and 16 characters.")
     private String name;
+
+    @Size(min = 2, max = 16, message = "Description must be between 2 and 256 characters.")
     private String description;
 
     @Override

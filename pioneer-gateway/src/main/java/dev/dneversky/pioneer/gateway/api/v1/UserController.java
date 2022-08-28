@@ -7,6 +7,8 @@ import dev.dneversky.pioneer.gateway.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
 
@@ -32,17 +34,17 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody UserToCreateDto userToCreateDto) {
+    public User createUser(@RequestBody @Valid UserToCreateDto userToCreateDto) {
         return userServiceImpl.createUser(userToCreateDto);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
+    public User updateUser(@RequestBody @Valid User user) {
         return userServiceImpl.updateUser(user);
     }
 
     @PatchMapping("/{userId}/password")
-    public User patchPassword(@PathVariable long userId, @RequestBody PasswordToChangeDto passwordToChangeDto) {
+    public User patchPassword(@PathVariable long userId, @RequestBody @Valid PasswordToChangeDto passwordToChangeDto) {
         return userServiceImpl.changePassword(userId, passwordToChangeDto.getOldPassword(), passwordToChangeDto.getNewPassword());
     }
 
@@ -62,7 +64,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}/specs")
-    public User patchSpecs(@PathVariable long userId, @RequestParam Set<String> specsIds) {
+    public User patchSpecs(@PathVariable long userId, @RequestParam @Size(min = 1, max = 16, message = "Specs must be between 1 and 16.") Set<String> specsIds) {
         return userServiceImpl.changeSpecs(userId, specsIds);
     }
 }

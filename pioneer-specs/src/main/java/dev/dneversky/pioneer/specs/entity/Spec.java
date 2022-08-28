@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Data
@@ -14,7 +16,12 @@ public class Spec {
 
     @Id
     private String id;
+
+    @NotNull(message = "Name must not be null.")
+    @Size(min = 2, max = 16, message = "Name must be between 2 and 16 characters.")
     private String name;
+
+    @Size(min = 2, max = 16, message = "Description must be between 2 and 256 characters.")
     private String description;
 
     @Override

@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,8 +16,13 @@ import java.util.Set;
 public class UserDetails {
 
     @Id
-    @NotNull
+    @NotNull(message = "Username must not be null.")
+    @Size(min = 6, max = 32, message = "Username must be between 6 and 32 characters.")
+    @Email(message = "Username must be email.")
     private String username;
+
+    @NotNull(message = "Password must not be null.")
+    @Size(min = 4, max = 16, message = "Password must be between 4 and 16 characters.")
     private String password;
 
     @ElementCollection

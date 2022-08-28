@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,11 +19,17 @@ import java.util.Objects;
 @AllArgsConstructor
 public class User {
 
+    @NotBlank(message = "Id must not be blank.")
     private long id;
+
+    @NotNull(message = "Nickname must not be null.")
+    @Size(min = 2, max = 16, message = "Nickname must be between 2 and 16 characters.")
     private String nickname;
 
     @Nullable
     private String teamId;
+
+    @Size(max = 12, message = "Nickname must be between 2 and 16 characters.")
     private List<String> specsId = new ArrayList<>();
 
     @Override

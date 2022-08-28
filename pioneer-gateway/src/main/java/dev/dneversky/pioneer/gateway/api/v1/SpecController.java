@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,12 +28,12 @@ public class SpecController {
     }
 
     @PostMapping
-    public ResponseEntity<Spec> createSpec(@RequestBody SpecToCreateDto specToCreateDto) {
+    public ResponseEntity<Spec> createSpec(@RequestBody @Valid SpecToCreateDto specToCreateDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(specService.createSpec(specToCreateDto));
     }
 
     @PutMapping
-    public ResponseEntity<Spec> updateSpec(@RequestBody Spec spec) {
+    public ResponseEntity<Spec> updateSpec(@RequestBody @Valid Spec spec) {
         return ResponseEntity.ok(specService.updateSpec(spec));
     }
 

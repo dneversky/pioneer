@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
@@ -32,12 +34,12 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody TeamToCreateDto teamToCreateDto) {
+    public ResponseEntity<Team> createTeam(@RequestBody @Valid TeamToCreateDto teamToCreateDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(teamService.createTeam(teamToCreateDto));
     }
 
     @PutMapping
-    public ResponseEntity<Team> updateTeam(@RequestBody Team team) {
+    public ResponseEntity<Team> updateTeam(@RequestBody @Valid Team team) {
         return ResponseEntity.ok(teamService.updateTeam(team));
     }
 
@@ -48,12 +50,12 @@ public class TeamController {
     }
 
     @PatchMapping("/{teamId}/specs")
-    public ResponseEntity<Team> changeSpecs(@PathVariable String teamId, @RequestParam List<String> specsIds) {
+    public ResponseEntity<Team> changeSpecs(@PathVariable String teamId, @RequestParam @Size(min = 1, max = 16, message = "Specs must be between 1 and 16.") List<String> specsIds) {
         return ResponseEntity.ok(teamService.changeSpecs(teamId, specsIds));
     }
 
     @PatchMapping("/{teamId}/members")
-    public ResponseEntity<Team> changeMembers(@PathVariable String teamId, @RequestParam List<Long> membersIds) {
+    public ResponseEntity<Team> changeMembers(@PathVariable String teamId, @RequestParam @Size(min = 1, max = 8, message = "Members must be between 1 and 8.") List<Long> membersIds) {
         return ResponseEntity.ok(teamService.changeMembers(teamId, membersIds));
     }
 }
