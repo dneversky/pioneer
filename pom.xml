@@ -15,7 +15,6 @@
 		<module>pioneer-eserver</module>
 		<module>pioneer-gateway</module>
 		<module>pioneer-user</module>
-		<module>pioneer-coach</module>
 		<module>pioneer-team</module>
 		<module>pioneer-project</module>
 		<module>pioneer-specs</module>

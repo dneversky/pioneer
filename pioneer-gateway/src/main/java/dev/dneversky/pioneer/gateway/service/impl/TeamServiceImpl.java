@@ -39,28 +39,23 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Team updateTeam(Team team) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.updateTeam(team));
+    }
+
+    @Override
     public void deleteTeam(String teamId) {
         teamGrpcImpl.deleteTeam(teamId);
     }
 
     @Override
-    public Team addSpecs(String teamId, Collection<String> specsIds) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.addSpecs(teamId, specsIds));
+    public Team changeSpecs(String teamId, Collection<String> specsIds) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.changeSpecs(teamId, specsIds));
     }
 
     @Override
-    public Team removeSpecs(String teamId, Collection<String> specsIds) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.removeSpecs(teamId, specsIds));
-    }
-
-    @Override
-    public Team addMembers(String teamId, Collection<Long> membersIds) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.addMembers(teamId, membersIds));
-    }
-
-    @Override
-    public Team removeMembers(String teamId, Collection<Long> membersIds) {
-        return constructTeamWithProtoTeam(teamGrpcImpl.removeMembers(teamId, membersIds));
+    public Team changeMembers(String teamId, Collection<Long> membersIds) {
+        return constructTeamWithProtoTeam(teamGrpcImpl.changeMembers(teamId, membersIds));
     }
 
     private Team constructTeamWithProtoTeam(TeamServiceOuterClass.Team protoTeam) {

@@ -36,29 +36,24 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(teamService.createTeam(teamToCreateDto));
     }
 
+    @PutMapping
+    public ResponseEntity<Team> updateTeam(@RequestBody Team team) {
+        return ResponseEntity.ok(teamService.updateTeam(team));
+    }
+
     @DeleteMapping("/{teamId}")
     public ResponseEntity<?> deleteTeam(@PathVariable String teamId) {
         teamService.deleteTeam(teamId);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{teamId}/specs/add")
-    public ResponseEntity<Team> addSpecs(@PathVariable String teamId, @RequestParam List<String> specsIds) {
-        return ResponseEntity.ok(teamService.addSpecs(teamId, specsIds));
+    @PatchMapping("/{teamId}/specs")
+    public ResponseEntity<Team> changeSpecs(@PathVariable String teamId, @RequestParam List<String> specsIds) {
+        return ResponseEntity.ok(teamService.changeSpecs(teamId, specsIds));
     }
 
-    @PatchMapping("/{teamId}/members/add")
-    public ResponseEntity<Team> addMembers(@PathVariable String teamId, @RequestParam List<Long> membersIds) {
-        return ResponseEntity.ok(teamService.addMembers(teamId, membersIds));
-    }
-
-    @PatchMapping("/{teamId}/specs/remove")
-    public ResponseEntity<Team> removeSpecs(@PathVariable String teamId, @RequestParam List<String> specsIds) {
-        return ResponseEntity.ok(teamService.removeSpecs(teamId, specsIds));
-    }
-
-    @PatchMapping("/{teamId}/members/remove")
-    public ResponseEntity<Team> removeMembers(@PathVariable String teamId, @RequestParam List<Long> membersIds) {
-        return ResponseEntity.ok(teamService.removeMembers(teamId, membersIds));
+    @PatchMapping("/{teamId}/members")
+    public ResponseEntity<Team> changeMembers(@PathVariable String teamId, @RequestParam List<Long> membersIds) {
+        return ResponseEntity.ok(teamService.changeMembers(teamId, membersIds));
     }
 }

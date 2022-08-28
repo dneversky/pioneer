@@ -36,9 +36,8 @@ service TeamService {
   rpc getTeams(EmptyTeam) returns (Teams);
   rpc getTeamById(TeamId) returns (Team);
   rpc createTeam(TeamBody) returns (Team);
+  rpc updateTeam(Team) returns (Team);
   rpc deleteTeam(TeamId) returns (EmptyTeam);
-  rpc addSpecs(TeamSpecs) returns (Team);
-  rpc removeSpecs(TeamSpecs) returns (Team);
-  rpc addMembers(TeamMembers) returns (Team);
-  rpc removeMembers(TeamMembers) returns (Team);
+  rpc changeSpecs(TeamSpecs) returns (Team);
+  rpc changeMembers(TeamMembers) returns (Team);
 }
