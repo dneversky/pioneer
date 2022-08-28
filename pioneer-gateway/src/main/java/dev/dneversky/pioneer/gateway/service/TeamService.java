@@ -9,8 +9,9 @@ public interface TeamService {
     Collection<Team> getTeams();
     Team getTeamById(String teamId);
     Team createTeam(TeamToCreateDto teamToCreateDto);
-    Team updateTeam(Team team);
     void deleteTeam(String teamId);
-    Team changeSpecs(String teamId, Collection<String> specsIds);
-    Team changeMembers(String teamId, Collection<Long> membersIds);
+    Team addSpecs(String teamId, Collection<String> specsIds);
+    Team removeSpecs(String teamId, Collection<String> specsIds);
+    Team addMembers(String teamId, Collection<Long> membersIds);
+    Team removeMembers(String teamId, Collection<Long> membersIds);
 }
