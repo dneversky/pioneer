@@ -1,1 +1,24 @@
+server:
+  port: 0
 
+spring:
+  application:
+    name: project-service
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: root
+      database: projects
+      port: 27017
+      host: localhost
+      auto-index-creation: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka
+
+grpc:
+  server:
+    port: 0
