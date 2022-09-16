@@ -8,10 +8,14 @@ import dev.dneversky.pioneer.user.exception.UserWithIdNotFoundException;
 import dev.dneversky.pioneer.user.exception.UserWithUsernameExistsException;
 import dev.dneversky.pioneer.user.repository.UserRepository;
 import dev.dneversky.pioneer.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,11 +24,12 @@ public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final KafkaTemplate<ProducerRecord, Callback> kafkaTemplate;
 
-    @Autowired
-    public DefaultUserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public DefaultUserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, KafkaTemplate<ProducerRecord, Callback> kafkaTemplate) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override

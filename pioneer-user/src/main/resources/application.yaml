@@ -23,3 +23,5 @@ eureka:
 grpc:
   server:
     port: 0
+
+bootstrapAddress: localhost:9092
