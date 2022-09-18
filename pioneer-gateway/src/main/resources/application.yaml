@@ -5,11 +5,6 @@ spring:
   application:
     name: gateway-service
 
-grpc:
-  client:
-    GLOBAL:
-      negotiationType: plaintext
-
 eureka:
   client:
     service-url:
