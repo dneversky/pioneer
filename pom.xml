@@ -18,6 +18,7 @@
 		<module>pioneer-team</module>
 		<module>pioneer-project</module>
 		<module>pioneer-specs</module>
+		<module>pioneer-coach</module>
 	</modules>
 
 	<properties>
@@ -48,10 +49,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

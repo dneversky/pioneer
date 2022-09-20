@@ -2,11 +2,9 @@ package dev.dneversky.pioneer.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@EnableEurekaServer
-@EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class PioneerGatewayApplication {
 
