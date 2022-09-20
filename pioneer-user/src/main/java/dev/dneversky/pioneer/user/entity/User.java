@@ -2,35 +2,34 @@ package dev.dneversky.pioneer.user.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
 @Data
+@Document(collection = "users")
 @NoArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @NotNull(message = "Nickname must not be null.")
     @Size(min = 2, max = 16, message = "Nickname must be between 2 and 16 characters.")
     private String nickname;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @DBRef
     private UserDetails details;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_spec", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "spec_id")
     private Set<String> specs = new HashSet<>();
 
+    @DocumentReference(db = "teams", collection = "team")
     private String teamId;
 
     @Override

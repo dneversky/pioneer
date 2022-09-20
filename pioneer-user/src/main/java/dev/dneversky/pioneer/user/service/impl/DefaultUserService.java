@@ -33,12 +33,12 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public List<User> getUsersByIds(Collection<Long> ids) {
-        return userRepository.findAllById(ids);
+    public List<User> getUsersByIds(Collection<String> ids) {
+        return (List<User>) userRepository.findAllById(ids);
     }
 
     @Override
-    public User getUserById(long id) {
+    public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
     }
 
@@ -60,14 +60,14 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User changeRoles(long userId, Collection<String> roleNames) {
+    public User changeRoles(String userId, Collection<String> roleNames) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.getDetails().setRoles(roleNames.stream().map(Role::valueOf).collect(Collectors.toSet()));
         return userRepository.save(user);
     }
 
     @Override
-    public User changePassword(long userId, String oldPassword, String newPassword) {
+    public User changePassword(String userId, String oldPassword, String newPassword) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         String encodedOldPassword = passwordEncoder.encode(oldPassword);
         if(!user.getDetails().getPassword().equals(encodedOldPassword)) {
@@ -87,13 +87,13 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
         userRepository.delete(user);
     }
 
     @Override
-    public User changeTeam(long userId, String teamId) {
+    public User changeTeam(String userId, String teamId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.setTeamId(teamId);
 
@@ -101,7 +101,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User changeSpecs(long userId, Set<String> specs) {
+    public User changeSpecs(String userId, Set<String> specs) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
         user.setSpecs(specs);
 

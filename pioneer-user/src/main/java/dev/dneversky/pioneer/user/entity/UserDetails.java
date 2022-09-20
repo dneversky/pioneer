@@ -2,16 +2,18 @@ package dev.dneversky.pioneer.user.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
 @Data
+@Document(collection = "userDetails")
 @NoArgsConstructor
 public class UserDetails {
 
@@ -24,14 +26,10 @@ public class UserDetails {
     @NotNull(message = "Password must not be null.")
     @Size(min = 4, max = 16, message = "Password must be between 4 and 16 characters.")
     private String password;
-
-    @ElementCollection
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
     private Set<Role> roles;
     private boolean enabled;
 
-    @OneToOne(mappedBy = "details")
+    @DBRef
     private User user;
 
     @Override

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 @Data
-@Document
+@Document(collection = "teams")
 @NoArgsConstructor
 public class Team {
 
@@ -19,7 +19,7 @@ public class Team {
     private String id;
 
     @Size(min = 1, max = 8, message = "Members must be between 1 and 8.")
-    private Collection<Long> members = new HashSet<>();
+    private Collection<String> members = new HashSet<>();
 
     @Size(min = 1, max = 8, message = "Specs must be between 1 and 16.")
     private Collection<String> specs = new HashSet<>();

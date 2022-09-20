@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Data
-@Document
+@Document(collection = "specs")
 @NoArgsConstructor
 public class Spec {
 

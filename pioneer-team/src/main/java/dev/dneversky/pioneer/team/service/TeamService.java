@@ -12,5 +12,5 @@ public interface TeamService {
     Team updateTeam(Team team);
     void deleteTeam(String teamId);
     Team changeSpecs(String teamId, Collection<String> specsIds);
-    Team changeMembers(String teamId, Collection<Long> membersIds);
+    Team changeMembers(String teamId, Collection<String> membersIds);
 }

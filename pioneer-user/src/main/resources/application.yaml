@@ -4,16 +4,15 @@ server:
 spring:
   application:
     name: user-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/piousers
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-      dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: root
+      database: users
+      port: 27017
+      host: localhost
+      auto-index-creation: true
 
 eureka:
   client:

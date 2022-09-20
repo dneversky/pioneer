@@ -55,7 +55,7 @@ public class DefaultTeamService implements TeamService {
     }
 
     @Override
-    public Team changeMembers(String teamId, Collection<Long> membersIds) {
+    public Team changeMembers(String teamId, Collection<String> membersIds) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamWithIdNotFoundException(teamId));
         team.setMembers(membersIds);
         return teamRepository.save(team);
