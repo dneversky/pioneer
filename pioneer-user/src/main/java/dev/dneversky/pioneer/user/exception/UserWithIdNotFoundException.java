@@ -1,7 +1,11 @@
 package dev.dneversky.pioneer.user.exception;
 
-public class UserWithIdNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class UserWithIdNotFoundException extends ResponseStatusException {
+
     public UserWithIdNotFoundException(String id) {
-        super("User with id " + id + " not found.");
+        super(HttpStatus.NOT_FOUND, "User with id '" + id + "' not found.");
     }
 }

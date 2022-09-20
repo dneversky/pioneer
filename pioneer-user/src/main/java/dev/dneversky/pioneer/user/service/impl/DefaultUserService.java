@@ -11,6 +11,8 @@ import dev.dneversky.pioneer.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,22 +30,22 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public List<User> getUsers() {
+    public Flux<User> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public List<User> getUsersByIds(Collection<String> ids) {
-        return (List<User>) userRepository.findAllById(ids);
+    public Flux<User> getUsersByIds(Collection<String> ids) {
+        return userRepository.findAllById(ids);
     }
 
     @Override
-    public User getUserById(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
+    public Mono<User> getUserById(String id) {
+        return userRepository.findById(id).doOnError(e -> Mono.error(new UserWithIdNotFoundException(id)));
     }
 
     @Override
-    public User saveUser(User user) {
+    public Mono<User> saveUser(User user) {
         Optional<User> findUser = userRepository.findByDetailsUsername(user.getDetails().getUsername());
         if(findUser.isPresent()) {
             throw new UserWithUsernameExistsException(user.getDetails().getUsername());
@@ -54,21 +56,20 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        userRepository.findById(user.getId()).orElseThrow(() -> new UserWithIdNotFoundException(user.getId()));
+    public Mono<User> updateUser(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public User changeRoles(String userId, Collection<String> roleNames) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
+    public Mono<User> changeRoles(String userId, Collection<String> roleNames) {
+        User user = userRepository.findById(userId).doOnError(e -> Mono.error(new UserWithIdNotFoundException(userId))).block();
         user.getDetails().setRoles(roleNames.stream().map(Role::valueOf).collect(Collectors.toSet()));
         return userRepository.save(user);
     }
 
     @Override
-    public User changePassword(String userId, String oldPassword, String newPassword) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
+    public Mono<User> changePassword(String userId, String oldPassword, String newPassword) {
+        User user = userRepository.findById(userId).doOnError(e -> Mono.error(new UserWithIdNotFoundException(userId))).block();
         String encodedOldPassword = passwordEncoder.encode(oldPassword);
         if(!user.getDetails().getPassword().equals(encodedOldPassword)) {
             throw new UnequalPasswordsException("Old and current passwords are not equal.");
@@ -88,21 +89,21 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void deleteUser(String id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserWithIdNotFoundException(id));
+        User user = userRepository.findById(id).doOnError(e -> Mono.error(new UserWithIdNotFoundException(id))).block();
         userRepository.delete(user);
     }
 
     @Override
-    public User changeTeam(String userId, String teamId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
+    public Mono<User> changeTeam(String userId, String teamId) {
+        User user = userRepository.findById(userId).doOnError(e -> Mono.error(new UserWithIdNotFoundException(userId))).block();
         user.setTeamId(teamId);
 
         return userRepository.save(user);
     }
 
     @Override
-    public User changeSpecs(String userId, Set<String> specs) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserWithIdNotFoundException(userId));
+    public Mono<User> changeSpecs(String userId, Set<String> specs) {
+        User user = userRepository.findById(userId).doOnError(e -> Mono.error(new UserWithIdNotFoundException(userId))).block();
         user.setSpecs(specs);
 
         return userRepository.save(user);

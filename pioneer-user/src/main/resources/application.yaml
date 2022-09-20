@@ -9,7 +9,7 @@ spring:
       authentication-database: admin
       username: root
       password: root
-      database: users
+      database: user
       port: 27017
       host: localhost
       auto-index-creation: true

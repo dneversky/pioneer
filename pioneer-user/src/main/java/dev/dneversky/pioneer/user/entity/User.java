@@ -3,7 +3,6 @@ package dev.dneversky.pioneer.user.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -25,7 +24,6 @@ public class User {
     @Size(min = 2, max = 16, message = "Nickname must be between 2 and 16 characters.")
     private String nickname;
 
-    @DBRef
     private UserDetails details;
     private Set<String> specs = new HashSet<>();
 
