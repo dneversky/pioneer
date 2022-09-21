@@ -5,7 +5,7 @@ import dev.dneversky.pioneer.user.entity.User;
 import dev.dneversky.pioneer.user.entity.UserDetails;
 import dev.dneversky.pioneer.user.exception.UnequalPasswordsException;
 import dev.dneversky.pioneer.user.exception.UserWithIdNotFoundException;
-import dev.dneversky.pioneer.user.exception.UserWithUsernameExistsException;
+import dev.dneversky.pioneer.user.repository.UserDetailsRepository;
 import dev.dneversky.pioneer.user.repository.UserRepository;
 import dev.dneversky.pioneer.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,42 +21,38 @@ import java.util.stream.Collectors;
 public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
+    private final UserDetailsRepository userDetailsRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DefaultUserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public DefaultUserService(UserRepository userRepository, UserDetailsRepository userDetailsRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userDetailsRepository = userDetailsRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public Flux<User> getUsers() {
+    public Flux<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public Flux<User> getUsersByIds(Collection<String> ids) {
+    public Flux<User> getUsersById(Flux<String> ids) {
         return userRepository.findAllById(ids);
     }
 
     @Override
     public Mono<User> getUserById(String id) {
-        return userRepository.findById(id).doOnError(e -> Mono.error(new UserWithIdNotFoundException(id)));
+        return userRepository.findById(id);
     }
 
     @Override
-    public Mono<User> saveUser(User user) {
-        Optional<User> findUser = userRepository.findByDetailsUsername(user.getDetails().getUsername());
-        if(findUser.isPresent()) {
-            throw new UserWithUsernameExistsException(user.getDetails().getUsername());
-        }
-        user.setDetails(createUserDetails(user.getDetails()));
-
-        return userRepository.save(user);
+    public Mono<User> createUser(Mono<User> userMono) {
+        return userRepository.saveAll(userMono).next();
     }
 
     @Override
-    public Mono<User> updateUser(User user) {
+    public Mono<User> updateUserById(String id, User user) {
         return userRepository.save(user);
     }
 
@@ -88,9 +84,10 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
+    public Mono<User> deleteUserById(String id) {
         User user = userRepository.findById(id).doOnError(e -> Mono.error(new UserWithIdNotFoundException(id))).block();
         userRepository.delete(user);
+        return Mono.just(user);
     }
 
     @Override
