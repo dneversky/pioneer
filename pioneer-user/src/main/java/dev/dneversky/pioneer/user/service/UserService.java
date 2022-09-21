@@ -1,15 +1,13 @@
 package dev.dneversky.pioneer.user.service;
 
 import dev.dneversky.pioneer.user.entity.User;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.Set;
 
 public interface UserService {
-    Flux<User> getAllUsers();
-    Flux<User> getUsersById(Flux<String> ids);
+    Mono<User> getAllUsers();
     Mono<User> getUserById(String id);
     Mono<User> createUser(Mono<User> userMono);  // Receives Mono for unblocking behaviour
     Mono<User> updateUserById(String id, User user);

@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -24,16 +23,7 @@ public class UserHandler {
     public Mono<ServerResponse> getAllUsers(ServerRequest request) {
         return ServerResponse
                 .ok()
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(userService.getAllUsers(), User.class);
-    }
-
-    public Mono<ServerResponse> getUsersById(ServerRequest request) {
-        Flux<String> usersId = request.bodyToFlux(String.class);
-        return ServerResponse
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(userService.getUsersById(usersId), User.class);
     }
 
     public Mono<ServerResponse> getUserById(ServerRequest request) {
@@ -41,7 +31,7 @@ public class UserHandler {
                 .flatMap(user -> ServerResponse
                         .ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(user, User.class)
+                        .bodyValue(user)
                 )
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
@@ -65,7 +55,7 @@ public class UserHandler {
 
     public Mono<ServerResponse> deleteUserById(ServerRequest request){
         return userService.deleteUserById(request.pathVariable("userId"))
-                .flatMap(u -> ServerResponse.ok().body(u, User.class))
+                .flatMap(u -> ServerResponse.ok().bodyValue(u))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 }

@@ -5,40 +5,33 @@ import dev.dneversky.pioneer.user.entity.User;
 import dev.dneversky.pioneer.user.entity.UserDetails;
 import dev.dneversky.pioneer.user.exception.UnequalPasswordsException;
 import dev.dneversky.pioneer.user.exception.UserWithIdNotFoundException;
-import dev.dneversky.pioneer.user.repository.UserDetailsRepository;
 import dev.dneversky.pioneer.user.repository.UserRepository;
 import dev.dneversky.pioneer.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
-    private final UserDetailsRepository userDetailsRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DefaultUserService(UserRepository userRepository, UserDetailsRepository userDetailsRepository, BCryptPasswordEncoder passwordEncoder) {
+    public DefaultUserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userDetailsRepository = userDetailsRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public Flux<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public Flux<User> getUsersById(Flux<String> ids) {
-        return userRepository.findAllById(ids);
+    public Mono<User> getAllUsers() {
+        return userRepository.findAll().next();
     }
 
     @Override
