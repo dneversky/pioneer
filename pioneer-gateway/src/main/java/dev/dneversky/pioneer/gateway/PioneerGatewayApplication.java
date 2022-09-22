@@ -21,6 +21,9 @@ public class PioneerGatewayApplication {
                 .route(route -> route
                         .path("/users/**")
                         .uri("lb://user-service"))
+                .route(route -> route
+                        .path("/teams/**")
+                        .uri("lb://team-service"))
                 .build();
     }
 }
