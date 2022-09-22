@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface UserService {
     Mono<User> getAllUsers();
-    Mono<User> getUserById(String id);
+    Mono<User> getUserById(Mono<String> id);
     Mono<User> createUser(Mono<User> userMono);  // Receives Mono for unblocking behaviour
     Mono<User> updateUserById(String id, User user);
     Mono<User> changeRoles(String userId, Collection<String> roleNames);

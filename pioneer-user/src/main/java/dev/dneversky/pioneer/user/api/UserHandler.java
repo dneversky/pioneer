@@ -27,7 +27,7 @@ public class UserHandler {
     }
 
     public Mono<ServerResponse> getUserById(ServerRequest request) {
-        return userService.getUserById(request.pathVariable("userId"))
+        return userService.getUserById(Mono.just(request.pathVariable("userId")))
                 .flatMap(user -> ServerResponse
                         .ok()
                         .contentType(MediaType.APPLICATION_JSON)

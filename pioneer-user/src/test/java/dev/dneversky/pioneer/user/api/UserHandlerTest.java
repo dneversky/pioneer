@@ -47,7 +47,7 @@ class UserHandlerTest {
                 User.builder().id("2").build(),
                 User.builder().id("3").build()
         };
-        when(userService.getUserById("2")).thenReturn(Mono.just(users[1]));
+        when(userService.getUserById(any())).thenReturn(Mono.just(users[1]));
         testClient.get().uri("/users/2")
                 .exchange()
                 .expectStatus().isOk()

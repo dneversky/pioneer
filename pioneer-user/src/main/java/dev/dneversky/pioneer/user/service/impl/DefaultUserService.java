@@ -35,8 +35,8 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public Mono<User> getUserById(String id) {
-        return userRepository.findById(id);
+    public Mono<User> getUserById(Mono<String> id) {
+        return userRepository.findAllById(id).next();
     }
 
     @Override
