@@ -1,5 +1,7 @@
 package dev.dneversky.pioneer.user.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -13,8 +15,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
+@Builder
 @Document(collection = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
