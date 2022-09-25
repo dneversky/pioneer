@@ -4,6 +4,7 @@ import dev.dneversky.pioneer.team.entity.Team;
 import dev.dneversky.pioneer.team.service.impl.DefaultTeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -27,9 +28,9 @@ public class TeamHandler {
 
     public Mono<ServerResponse> createTeam(ServerRequest request) {
         Mono<Team> teamMono = request.bodyToMono(Team.class);
-        return teamService.saveTeam(teamMono)
-                .flatMap(e -> ServerResponse
-                        .status(HttpStatus.CREATED)
-                        .body(e, Team.class));
+        return ServerResponse
+                .status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(teamService.createTeam(teamMono), Team.class);
     }
 }

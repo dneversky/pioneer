@@ -3,11 +3,13 @@ package dev.dneversky.pioneer.team.service.impl;
 import dev.dneversky.pioneer.team.api.UserWebClient;
 import dev.dneversky.pioneer.team.entity.Team;
 import dev.dneversky.pioneer.team.entity.User;
+import dev.dneversky.pioneer.team.exception.UserWithIdNotFoundException;
 import dev.dneversky.pioneer.team.repository.TeamRepository;
 import dev.dneversky.pioneer.team.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
@@ -26,31 +28,34 @@ public class DefaultTeamService implements TeamService {
     }
 
     @Override
-    public Mono<Team> getTeams() {
-        return teamRepository.findAll().next();
+    public Flux<Team> getTeams() {
+        return teamRepository.findAll();
     }
 
     @Override
-    public Mono<Team> getTeamById(String id) {
+    public Mono<Team> getTeamById(Mono<String> id) {
         return teamRepository.findById(id);
     }
 
     @Override
-    public Mono<Team> saveTeam(Mono<Team> team) {
-        return team.flatMap(e -> getUserById(e.getMembers().get(0)))
-                .flatMap(e -> teamRepository.saveAll(team).next())
-                .switchIfEmpty(Mono.error(new Exception()));
+    public Mono<Team> createTeam(Mono<Team> teamMono) {
+        return getUsersById(teamMono.flatMapIterable(Team::getMembers)).collectList()
+                .switchIfEmpty(Mono.error(new UserWithIdNotFoundException()))
+                .log("Data1: ")
+                .flatMap(e -> {
+                    Flux<Team> savedTeam = teamRepository.saveAll(teamMono);
+                    return savedTeam.next();
+                });
     }
 
     @Override
     public Mono<Team> updateTeamById(String id, Team team) {
-        teamRepository.findById(team.getId());
         return teamRepository.save(team);
     }
 
     @Override
-    public Mono<Team> deleteTeamById(String id) {
-        return null;
+    public Mono<Void> deleteTeamById(Mono<String> id) {
+        return teamRepository.deleteById(id);
     }
 
     @Override
@@ -83,7 +88,7 @@ public class DefaultTeamService implements TeamService {
 //        return teamRepository.save(team);
 //    }
 
-    private Mono<User> getUserById(String userId) {
-        return userWebClient.getUserById(userId);
+    private Flux<User> getUsersById(Flux<String> usersId) {
+        return userWebClient.getUsersById(usersId).log();
     }
 }

@@ -36,6 +36,13 @@ public class UserHandler {
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
+    public Mono<ServerResponse> getUsersById(ServerRequest request) {
+        return ServerResponse
+                .ok()
+                .body(userService.getUsersById(request.bodyToFlux(String.class)), User.class)
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
     public Mono<ServerResponse> createUser(ServerRequest request) {
         Mono<User> userMono = request.bodyToMono(User.class);
         return ServerResponse

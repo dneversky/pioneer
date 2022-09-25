@@ -14,6 +14,7 @@ public class RouterConfig {
     @Bean
     public RouterFunction<?> routerFunction(UserHandler handler) {
         return route(GET("/users"), handler::getAllUsers)
+                .andRoute(GET("/users/ids"), handler::getUsersById)
                 .andRoute(GET("/users/{userId}"), handler::getUserById)
                 .andRoute(POST("/users"), handler::createUser)
                 .andRoute(PUT("/users/{userId}"), handler::updateUserById)

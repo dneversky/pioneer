@@ -10,6 +10,7 @@ import dev.dneversky.pioneer.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
@@ -30,13 +31,18 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public Mono<User> getAllUsers() {
-        return userRepository.findAll().next();
+    public Flux<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
     public Mono<User> getUserById(Mono<String> id) {
-        return userRepository.findAllById(id).next();
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public Flux<User> getUsersById(Flux<String> ids) {
+        return userRepository.findAllById(ids);
     }
 
     @Override
@@ -77,10 +83,8 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public Mono<User> deleteUserById(String id) {
-        User user = userRepository.findById(id).doOnError(e -> Mono.error(new UserWithIdNotFoundException(id))).block();
-        userRepository.delete(user);
-        return Mono.just(user);
+    public Mono<Void> deleteUserById(String id) {
+        return userRepository.deleteById(id);
     }
 
     @Override
