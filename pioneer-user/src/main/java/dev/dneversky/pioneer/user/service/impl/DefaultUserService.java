@@ -5,6 +5,8 @@ import dev.dneversky.pioneer.user.entity.User;
 import dev.dneversky.pioneer.user.entity.UserDetails;
 import dev.dneversky.pioneer.user.exception.UnequalPasswordsException;
 import dev.dneversky.pioneer.user.exception.UserWithIdNotFoundException;
+import dev.dneversky.pioneer.user.model.RelativeTeamRequest;
+import dev.dneversky.pioneer.user.model.RelativeTeamResponse;
 import dev.dneversky.pioneer.user.repository.UserRepository;
 import dev.dneversky.pioneer.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,11 +38,6 @@ public class DefaultUserService implements UserService {
     @Override
     public Mono<User> getUserById(Mono<String> id) {
         return userRepository.findById(id);
-    }
-
-    @Override
-    public Flux<User> getUsersById(Flux<String> ids) {
-        return userRepository.findAllById(ids);
     }
 
     @Override
@@ -88,11 +83,24 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public Mono<User> changeTeam(String userId, String teamId) {
-        User user = userRepository.findById(userId).doOnError(e -> Mono.error(new UserWithIdNotFoundException(userId))).block();
-        user.setTeamId(teamId);
-
-        return userRepository.save(user);
+    public Mono<RelativeTeamResponse> changeTeam(Mono<RelativeTeamRequest> requestMono) {
+        List<String> changedUsers = new ArrayList<>();
+        List<String> unChangedUsers = new ArrayList<>();
+        return requestMono.doOnNext(e -> {
+                    Flux<String> usersId = Flux.fromIterable(e.getUsersId());
+                    usersId.doOnNext(userId -> {
+                        Mono<User> foundUser = userRepository.findById(userId);
+                        foundUser.handle((user, sink) -> {
+                            if(user.getTeamId() != null) {
+                                user.setId(e.getTeamId());
+                                userRepository.save(user);
+                                changedUsers.add(userId);
+                                sink.next(user.getId());
+                            }
+                            unChangedUsers.add(userId);
+                        });
+                    });
+        }).flatMap(el -> Mono.just(new RelativeTeamResponse(changedUsers, unChangedUsers)));
     }
 
     @Override

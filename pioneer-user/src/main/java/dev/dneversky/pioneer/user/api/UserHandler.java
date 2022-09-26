@@ -1,6 +1,7 @@
 package dev.dneversky.pioneer.user.api;
 
 import dev.dneversky.pioneer.user.entity.User;
+import dev.dneversky.pioneer.user.model.RelativeTeamRequest;
 import dev.dneversky.pioneer.user.service.impl.DefaultUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,13 +37,6 @@ public class UserHandler {
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
-    public Mono<ServerResponse> getUsersById(ServerRequest request) {
-        return ServerResponse
-                .ok()
-                .body(userService.getUsersById(request.bodyToFlux(String.class)), User.class)
-                .switchIfEmpty(ServerResponse.notFound().build());
-    }
-
     public Mono<ServerResponse> createUser(ServerRequest request) {
         Mono<User> userMono = request.bodyToMono(User.class);
         return ServerResponse
@@ -58,6 +52,19 @@ public class UserHandler {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userService.updateUserById(id, u), User.class));
+    }
+
+    /** Receives teamId: string and usersId: array of strings. <br>
+     * Returns RelateTeamResponse: <br>
+     * status 1 - all users added teamId <br>
+     * status 0 - some users haven't added teamId <br>
+     * status -1 - no one user has added teamId
+     * **/
+
+    public Mono<ServerResponse> addTeamToUsers(ServerRequest request) {
+        return ServerResponse
+                .ok()
+                .body(userService.changeTeam(request.bodyToMono(RelativeTeamRequest.class)), Integer.class);
     }
 
     public Mono<ServerResponse> deleteUserById(ServerRequest request){

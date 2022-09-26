@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RelateTeamRequest {
+public class RelativeTeamRequest {
 
     private List<String> usersId;
     private String teamId;

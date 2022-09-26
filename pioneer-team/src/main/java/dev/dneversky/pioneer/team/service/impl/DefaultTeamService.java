@@ -2,8 +2,8 @@ package dev.dneversky.pioneer.team.service.impl;
 
 import dev.dneversky.pioneer.team.api.UserWebClient;
 import dev.dneversky.pioneer.team.entity.Team;
-import dev.dneversky.pioneer.team.entity.User;
 import dev.dneversky.pioneer.team.exception.UserWithIdNotFoundException;
+import dev.dneversky.pioneer.team.model.RelateTeamRequest;
 import dev.dneversky.pioneer.team.repository.TeamRepository;
 import dev.dneversky.pioneer.team.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,14 +38,18 @@ public class DefaultTeamService implements TeamService {
     }
 
     @Override
-    public Mono<Team> createTeam(Mono<Team> teamMono) {
-        return getUsersById(teamMono.flatMapIterable(Team::getMembers)).collectList()
-                .switchIfEmpty(Mono.error(new UserWithIdNotFoundException()))
-                .log("Data1: ")
-                .flatMap(e -> {
-                    Flux<Team> savedTeam = teamRepository.saveAll(teamMono);
-                    return savedTeam.next();
-                });
+    public Mono<Object> createTeam(Mono<Team> teamMono) {
+        return sendTeamToUsers(teamMono)
+                .collectList()
+                .handle((userList, sink) -> {
+                    if(userList.size() == 0) {
+                        sink.error(new UserWithIdNotFoundException("Users not found"));
+                    } else {
+                        userList.forEach(e -> teamMono.map(r -> r.getMembers().add(e)));
+                        sink.next(teamRepository.saveAll(teamMono));
+                    }
+                })
+                .onErrorReturn(Mono.empty());
     }
 
     @Override
@@ -88,7 +92,13 @@ public class DefaultTeamService implements TeamService {
 //        return teamRepository.save(team);
 //    }
 
-    private Flux<User> getUsersById(Flux<String> usersId) {
-        return userWebClient.getUsersById(usersId).log();
+    private Flux<String> sendTeamToUsers(Mono<Team> teamMono) {
+        Mono<RelateTeamRequest> requestMono = teamMono.flatMap(e -> {
+            RelateTeamRequest request = new RelateTeamRequest();
+            request.setUsersId(e.getMembers());
+            request.setTeamId(e.getId());
+            return Mono.just(request);
+        });
+        return userWebClient.getUsersById(requestMono);
     }
 }

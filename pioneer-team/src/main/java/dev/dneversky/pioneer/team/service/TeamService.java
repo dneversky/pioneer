@@ -9,7 +9,7 @@ import java.util.Collection;
 public interface TeamService {
     Flux<Team> getTeams();
     Mono<Team> getTeamById(Mono<String> id);
-    Mono<Team> createTeam(Mono<Team> team);
+    Mono<Object> createTeam(Mono<Team> team);
     Mono<Team> updateTeamById(String id, Team team);
     Mono<Void> deleteTeamById(Mono<String> id);
     Mono<Team> changeSpecs(String teamId, Collection<String> specsIds);
